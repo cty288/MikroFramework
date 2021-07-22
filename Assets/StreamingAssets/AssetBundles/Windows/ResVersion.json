@@ -1,0 +1,35 @@
+{
+    "Version": "0.8",
+    "ABMD5List": [
+        {
+            "AssetName": "mftest",
+            "MD5": "f47e5771198d6729696c699bf7ab2178",
+            "FileSize": 917.056640625
+        },
+        {
+            "AssetName": "mftest2",
+            "MD5": "f211c37336b326a3cb58b886f411aee7",
+            "FileSize": 3.875
+        },
+        {
+            "AssetName": "scene",
+            "MD5": "8901e6db7015146295a5c4e489563e76",
+            "FileSize": 109.634765625
+        },
+        {
+            "AssetName": "test_sphere",
+            "MD5": "a7ba4b4b27ec6a6bdc7ce69aa7fe2e47",
+            "FileSize": 40.447265625
+        },
+        {
+            "AssetName": "Windows",
+            "MD5": "0e39a6c8a1cefa9cbbf03ef27b4a3f10",
+            "FileSize": 1.6650390625
+        },
+        {
+            "AssetName": "reskit/test",
+            "MD5": "35abe01ee779e4ddd87e3a432829d11d",
+            "FileSize": 33.7158203125
+        }
+    ]
+}

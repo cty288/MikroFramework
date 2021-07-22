@@ -1,0 +1,420 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="MikroFramework.Examples.CommonUtilityExample" Collapsed="true">
+    <Position X="22.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Examples\01. CommonUtility\CommonUtilityExample.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Examples.TransformUtilityExample" Collapsed="true">
+    <Position X="19.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAIAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Examples\03. TransformExtension\TransformExtensionExample.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Examples.GameObjectUtilityExample" Collapsed="true">
+    <Position X="24.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Examples\04. GameObjectExtension\GameObjectExtensionExample.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Examples.ResolutionCheckExample" Collapsed="true">
+    <Position X="22.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Examples\05. ResolutionCheckUtility\ResolutionCheckExample.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Examples.MathUtilityExample" Collapsed="true">
+    <Position X="22.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAABAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Examples\06. MathUtility\MathUtilityExample.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Examples.DelayWithCoroutineExample" Collapsed="true">
+    <Position X="10" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAEAAAAAAAAAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Examples\07. MikroBehavior\DelayWithCoroutineExample.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Examples.EventSystemInMikroBehavior" Collapsed="true">
+    <Position X="14.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAAABAAAgAAAAAAAAAAIAAEA=</HashCode>
+      <FileName>Assets\MikroFramework\Examples\07. MikroBehavior\EventSystemInMikroBehaviorExample.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Examples.Hide" Collapsed="true">
+    <Position X="16.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAEAAAAAAAAAAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Examples\07. MikroBehavior\Hide.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Examples.GameModule" Collapsed="true">
+    <Position X="7.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAQAAACCAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Examples\08. EntranceManager\Game\GameModule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Examples.HomeModule" Collapsed="true">
+    <Position X="10" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAQAAACCAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Examples\08. EntranceManager\Home\HomeModule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Examples.GUIManagerExample" Collapsed="true">
+    <Position X="5.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Examples\09. GUIManager\GUIManagerExample.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Examples.AudioManagerExample" Collapsed="true">
+    <Position X="7.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAEAAAAAAAAAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Examples\10. AudioManager\AudioManagerExample.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Examples.PoolManagerExample" Collapsed="true">
+    <Position X="26.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Examples\11. PoolManager\PoolManagerExample.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Examples.LevelManagerExample" Collapsed="true">
+    <Position X="12.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAEAAAAAAAAAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Examples\12. LevelManager\LevelManagerExample.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Examples.SingletonExample" Collapsed="true">
+    <Position X="2.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Examples\13. SingletonExample\SingletonExample.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Examples.MonoMikroSingletonExample" Collapsed="true">
+    <Position X="7.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAAAAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Examples\14. MonoBehaviorMikroSingleton\MonoMikroSingletonExample.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Examples.EventSystemExample" Collapsed="true">
+    <Position X="3.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAEAAAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Examples\15. EventSystem\EventSystemExample.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Examples.StaticThisExtensionExample" Collapsed="true">
+    <Position X="26.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Examples\16. StaticThisExtension\StaticThisExtensionExample.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Examples.UnloadPrefabExample" Collapsed="true">
+    <Position X="24.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Examples\17. UnloadResources\UnloadPrefabExample.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Examples.UnloadResourcesExample" Collapsed="true">
+    <Position X="26.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Examples\17. UnloadResources\UnloadResourcesExample.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Examples.ResManagerExample" Collapsed="true">
+    <Position X="19.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAABAAAAAAAAAAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Examples\18. ResManagerExample\ResManagerExample.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Examples.UIXXXPanelExample" Collapsed="true">
+    <Position X="21" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQBAAAAACAAABAAAAAAAAAAEgAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Examples\18. ResManagerExample\UIXXXPanelExample.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Examples.UIYYYPanel" Collapsed="true">
+    <Position X="22.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQBAAAAACAAAAAAAAAAAAAAEgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Examples\18. ResManagerExample\UIXXXPanelExample.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Examples.SimpleRCExample" Collapsed="true">
+    <Position X="24.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Examples\19. SimpleRC\SimpleRCExample.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Examples.AssetBundleExample" Collapsed="true">
+    <Position X="19.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAACACAAAAAAAAAAAAQAAAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Examples\20. AssetBundleExample\AssetBundleExample.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MyNamespace.EditorUtilityExample" Collapsed="true">
+    <Position X="28" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Examples\02. EditorUtility\EditorUtilityExample.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MainManagerExample" Collapsed="true">
+    <Position X="19.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Examples\08. EntranceManager\MainManagerExample.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Utilities.Exporter" Collapsed="true">
+    <Position X="21" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Framework\Editor\Exporter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Utilities.CommonUtility" Collapsed="true">
+    <Position X="21" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Framework\Utilities\CommonUtility.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Utilities.EditorUtility" Collapsed="true">
+    <Position X="26.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgEAAAAAAAAAAAABAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Framework\Utilities\EditorUtility.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Utilities.MathUtility" Collapsed="true">
+    <Position X="21" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Framework\Utilities\MathUtility.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Utilities.ResolutionCheck" Collapsed="true">
+    <Position X="21" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAgAAAAAAABAACAAAAIAAAAIAAAAAAAAQAAAAABA=</HashCode>
+      <FileName>Assets\MikroFramework\Framework\Utilities\ResolutionCheck.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Utilities.Pool&lt;T&gt;" Collapsed="true">
+    <Position X="5.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAEAAAgAAAAAAAAAAAAAABAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Framework\Utilities\SimpleObjectPool.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MikroFramework.Utilities.CustomObjectFactory&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="24.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Framework\Utilities\SimpleObjectPool.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="MikroFramework.Utilities.SimpleObjectPool&lt;T&gt;" Collapsed="true">
+    <Position X="5.75" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAABAAAAAAAABAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Framework\Utilities\SimpleObjectPool.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Event.MikroMessage" Collapsed="true">
+    <Position X="24.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAAAAAAAAAAAAAAAAAAEABAAAAAQAABAA=</HashCode>
+      <FileName>Assets\MikroFramework\Framework\Event System\EventCenter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Event.EventCenter" Collapsed="true">
+    <Position X="19.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAACAABAAAAAAAAAAAAAAIAAACAAAAAABgAA=</HashCode>
+      <FileName>Assets\MikroFramework\Framework\Event System\EventCenter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Extensions.GameObjectExtension" Collapsed="true">
+    <Position X="22.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAAEAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Framework\Extensions\GameObjectExtension.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Extensions.TransformExtension" Collapsed="true">
+    <Position X="28" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAYAAAAAABAAEAAAABAAAAAAAAAAAAAAAEAAAAAAAGM=</HashCode>
+      <FileName>Assets\MikroFramework\Framework\Extensions\TransformExtension.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Managers.AudioManager" Collapsed="true">
+    <Position X="2.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAggAAAACAAACEUAEAAAAAAAAAAAAAAAAAQAAEA=</HashCode>
+      <FileName>Assets\MikroFramework\Framework\Managers\AudioManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Managers.EntranceManager" Collapsed="true">
+    <Position X="9" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAiAAAEAAAQAABCCAAAQAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Framework\Managers\EntranceManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Managers.GUIManager" Collapsed="true">
+    <Position X="26.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIACAAAAAAAAAAEAAAAAAAAAAAAAMAAAAAAAEA=</HashCode>
+      <FileName>Assets\MikroFramework\Framework\Managers\GUIManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Managers.LevelManager" Collapsed="true">
+    <Position X="28" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAgAAAAAAAAAAAAAAAAAAAAAAAAAAAECACAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Framework\Managers\LevelManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.MikroBehavior" Collapsed="true">
+    <Position X="10" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAACAABAAAERAAAAAAAAIIAAAAAAIAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Framework\MikroBehavior.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.SimpleRC">
+    <Position X="10.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAgAACACAAAAAAAAAAABAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Framework\Utilities\SimpleRC.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MikroFramework.ResKit.Res">
+    <Position X="10.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAIAAAAAAQCAAAAAAAAAIAgAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Framework\ResKit\Res.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.ResKit.ResLoader" Collapsed="true">
+    <Position X="28" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAgAAAAAAAIAGACAAAAAgAAAAAAAAACAAAEAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Framework\ResKit\ResLoader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.ResKit.ResManager">
+    <Position X="5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Framework\ResKit\ResManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Singletons.MikroSingleton&lt;T&gt;" Collapsed="true">
+    <Position X="2.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAABAAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Framework\SingletonFramework\MikroSingleton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Singletons.MonoPersistentMikroSingleton&lt;T&gt;" Collapsed="true">
+    <Position X="5.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAABAAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Framework\SingletonFramework\MonoMikroSingleton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.Singletons.MonoMikroSingleton&lt;T&gt;" Collapsed="true">
+    <Position X="7.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAAAAgABAAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Framework\SingletonFramework\MonoMikroSingleton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.ResKit.AssetBundleRes" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAgAAAAAAAIAAAAAAAAAAgAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Framework\ResKit\AssetBundleRes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikroFramework.ResKit.ResourcesRes" Collapsed="true">
+    <Position X="2.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAgAAAAAAAIAAAAAAAAAAAAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Framework\ResKit\ResourcesRes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="MikroFramework.Utilities.IPool&lt;T&gt;" Collapsed="true">
+    <Position X="21" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Framework\Utilities\SimpleObjectPool.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MikroFramework.Utilities.IObjectFactory&lt;T&gt;" Collapsed="true">
+    <Position X="19.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Framework\Utilities\SimpleObjectPool.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="MikroFramework.IRefCounter" Collapsed="true">
+    <Position X="22.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAgAAAACAAAAAAAAAAABAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Framework\Utilities\SimpleRC.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="MikroFramework.Event.EventType" Collapsed="true">
+    <Position X="21" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAQAACAEAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Framework\Event System\EventType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MikroFramework.Managers.EnvironmentMode" Collapsed="true">
+    <Position X="19.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAEAAAAAAAAAAgA=</HashCode>
+      <FileName>Assets\MikroFramework\Framework\Managers\EntranceManager.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MikroFramework.Managers.UILayer" Collapsed="true">
+    <Position X="22.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAACAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\MikroFramework\Framework\Managers\GUIManager.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>

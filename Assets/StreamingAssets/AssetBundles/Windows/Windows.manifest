@@ -1,0 +1,18 @@
+ManifestFileVersion: 0
+CRC: 2341210595
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: mftest
+      Dependencies:
+        Dependency_0: test_sprite
+    Info_1:
+      Name: test_sprite
+      Dependencies: {}
+    Info_2:
+      Name: test_sphere
+      Dependencies: {}
+    Info_3:
+      Name: mftest2
+      Dependencies:
+        Dependency_0: test_sprite

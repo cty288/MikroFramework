@@ -1,0 +1,31 @@
+ManifestFileVersion: 0
+CRC: 3235788898
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: d5ca44cba4a45aabc52097ec1d98d8fd
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: bf4dedcd4e09c7ca327507535f46f0b9
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 83
+  Script: {instanceID: 0}
+- Class: 212
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/MikroFramework/Examples/Managers/03. AudioManager/Resources/War loop.wav
+- Assets/MikroFramework/Examples/ResKit/02. AssetBundleExample/TestABObj.prefab
+Dependencies:
+- D:/programming/unity/projects/MikroFramework/Assets/StreamingAssets/AssetBundles/Windows/test_sprite
