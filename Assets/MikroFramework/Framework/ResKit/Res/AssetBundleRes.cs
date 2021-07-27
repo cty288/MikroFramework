@@ -80,6 +80,7 @@ namespace MikroFramework.ResKit
             }
 
             if (!ResManager.IsSimulationModeLogic) {
+                Debug.Log(AssetPath);
                 AssetBundle = AssetBundle.LoadFromFile(AssetPath);
             }
 

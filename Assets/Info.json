@@ -1,0 +1,14 @@
+{
+  "Name": {
+    "Value": "Test"
+  },
+  "Age": {
+    "Value": 100
+  },
+  "State": {
+    "Value": {
+      "hp": 50,
+      "mp": 90
+    }
+  }
+}

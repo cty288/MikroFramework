@@ -11,10 +11,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/MikroFramework/Examples/Managers/01. EntranceManager/Game/GameTest.unity
     guid: 0ee1719f11189734a9374bdbdefc78ee
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
-    path: Assets/MikroFramework/Playground/Test1.unity
-    guid: 1eefc978adc42e34abdd982a10f60b9b
-  - enabled: 1
-    path: Assets/MikroFramework/Playground/Test2.unity
-    guid: 3e2e32fcd4b8c6e44a1e6db4a757b127
+    path: Assets/MikroFramework/Examples/ResKit/06. LoadSceneABExample/TestABScene.unity
+    guid: a047158aec8d4544489c4383ddb6783d
   m_configObjects: {}

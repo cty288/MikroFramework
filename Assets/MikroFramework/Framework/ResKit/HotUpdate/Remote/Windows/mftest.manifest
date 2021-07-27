@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 186776236
+CRC: 1341393068
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 35ef59a8cea06d6aa9b7a5c077ef2405
+    Hash: cd4c47770342fa010a97286dcb584876
   TypeTreeHash:
     serializedVersion: 2
-    Hash: bf4dedcd4e09c7ca327507535f46f0b9
+    Hash: 9a2f4c88a41f1c900bb6827eda5a99f7
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -15,9 +15,19 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 21
   Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
 - Class: 48
   Script: {instanceID: 0}
 - Class: 83
+  Script: {instanceID: 0}
+- Class: 136
   Script: {instanceID: 0}
 - Class: 212
   Script: {instanceID: 0}
@@ -27,5 +37,6 @@ SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/MikroFramework/Examples/Managers/03. AudioManager/Resources/War loop.wav
 - Assets/MikroFramework/Examples/ResKit/02. AssetBundleExample/folder/TestABObj.prefab
-Dependencies:
-- D:/programming/unity/projects/MikroFramework/Assets/AssetBundleBuilds/0.1/Windows/reskit/test.ab
+- Assets/MikroFramework/Examples/ResKit/02. AssetBundleExample/folder/folder/Asteroid_1.png
+- Assets/MikroFramework/Examples/ResKit/02. AssetBundleExample/folder/folder/Cylinder.prefab
+Dependencies: []

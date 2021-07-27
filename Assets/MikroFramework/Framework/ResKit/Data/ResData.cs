@@ -10,6 +10,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace MikroFramework.ResKit {
+    /// <summary>
+    /// Class that manage Project AB Manifest and saves all AB's load path (from local or hot-update manager)
+    /// </summary>
     public class ResData : MonoPersistentMikroSingleton<ResData> {
         private static AssetBundleManifest manifest;
         private static AssetBundle manifestBundle;
@@ -21,11 +24,9 @@ namespace MikroFramework.ResKit {
         /// </summary>
         public void Init(Action<HotUpdateError> onInitError) {
             onError += onInitError;
-        }
-
-        void Start() {
             Load();
         }
+
 
         void OnDestroy() {
             if (manifestBundle != null) {
@@ -43,7 +44,6 @@ namespace MikroFramework.ResKit {
                 return AssetBundleDatas.Find(abData => abData.Name == bundleName)
                     .DependencyBundleNames;
             }
-
             return manifest.GetDirectDependencies(bundleName);
         }
 
@@ -72,7 +72,8 @@ namespace MikroFramework.ResKit {
         /// players may delete it)
         /// </summary>
         public void UpdateManifest() {
-            string filePath = ResKitUtility.LocalAssetBundlePath(ResKitUtility.CurrentPlatformName);
+            string filePath = ResKitUtility.GetAssetBundlePath(ResKitUtility.CurrentPlatformName);
+
             if (File.Exists(filePath)) {
                 if (manifestBundle != null) {
                     manifestBundle.Unload(true);
@@ -80,10 +81,12 @@ namespace MikroFramework.ResKit {
                 manifestBundle =
                     UnityEngine.AssetBundle.LoadFromFile(filePath);
                 manifest = manifestBundle.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
+                Debug.Log($"Updated Manifest File: {filePath}");
             }
         }
 
         private void Load() {
+            AssetBundleDatas.Clear();
             if (ResManager.IsSimulationModeLogic) {
 #if UNITY_EDITOR
                 string[] abNames = UnityEditor.AssetDatabase.GetAllAssetBundleNames();
@@ -124,80 +127,127 @@ namespace MikroFramework.ResKit {
             }
             else {
                 Debug.Log("ResData start Loading");
-                HotUpdateState hotUpdateState = HotUpdateManager.Singleton.State;
 
-                if (hotUpdateState == HotUpdateState.NeverUpdated || hotUpdateState == HotUpdateState.Overridden) {
-                    StartCoroutine(HotUpdateConfig.GetLocalAssetResVersion(resVersion => {
-                        foreach (ABMD5Base abmd5Base in resVersion.ABMD5List) {
-                            AssetBundleData data = new AssetBundleData() {
-                                Name = abmd5Base.AssetName,
-                                MD5 = abmd5Base.MD5,
-                                LoadOption = AssetBundleLoadOption.FromLocalFolder
-                            };
-                            AssetBundleDatas.Add(data);
+                bool hasHotUpdate = HotUpdateManager.Exists;
+                Debug.Log($"HotUpdate Manager exists: {hasHotUpdate}");
 
-                        }
-                        UpdateManifest();
-                    }, error => {
-                        onError.Invoke(error);
-                    }));
-                }
-                else if (hotUpdateState == HotUpdateState.Updated) {
-
-
-
-                    string hotUpdateFolder = ResKitUtility.HotUpdateAssetBundleFolder;
-                    DirectoryInfo directoryInfo = new DirectoryInfo(hotUpdateFolder);
-                    FileInfo[] files = directoryInfo.GetFiles("*", SearchOption.AllDirectories);
-                    
-                    
-                    UpdateManifest();
-
-
-                    ResVersion hotUpdateFolderResVersion = HotUpdateConfig.LoadHotUpdateAssetBundlesFolderResVersion();
-                    List<string> abNamesInHotUpdateFolder = new List<string>();
-
-                    for (int i = 0; i < hotUpdateFolderResVersion.ABMD5List.Count; i++) {
-                        ABMD5Base abmd5Base = hotUpdateFolderResVersion.ABMD5List[i];
-
-                        for (int j = 0; j < files.Length; j++) {
-                            //get file's "real name" (e.g.: AssetName: xxx/yyy, realName: yyy)
-                            string realName = abmd5Base.AssetName.Substring(abmd5Base.AssetName.LastIndexOf('/') + 1);
-
-                            if (files[j].Name == realName) {
-                                AssetBundleData assetBundleData = new AssetBundleData() {
+                if (hasHotUpdate) {
+                    HotUpdateState hotUpdateState = HotUpdateManager.Singleton.State;
+                    if (hotUpdateState == HotUpdateState.NeverUpdated || hotUpdateState == HotUpdateState.Overridden)
+                    {
+                        StartCoroutine(HotUpdateDownloader.GetLocalAssetResVersion(resVersion => {
+                            foreach (ABMD5Base abmd5Base in resVersion.ABMD5List)
+                            {
+                                AssetBundleData data = new AssetBundleData()
+                                {
                                     Name = abmd5Base.AssetName,
                                     MD5 = abmd5Base.MD5,
-                                    LoadOption = AssetBundleLoadOption.FromHotUpdateFolder
+                                    LoadOption = AssetBundleLoadOption.FromLocalFolder
                                 };
-                                abNamesInHotUpdateFolder.Add(abmd5Base.AssetName);
-                                AssetBundleDatas.Add(assetBundleData);
-                                break;
+                                AssetBundleDatas.Add(data);
+
                             }
-                        }
+                            UpdateManifest();
+                        }, error => {
+                            onError.Invoke(error);
+                        }));
                     }
+                    else if (hotUpdateState == HotUpdateState.Updated)
+                    {
 
-                    for (int i = 0; i < hotUpdateFolderResVersion.ABMD5List.Count; i++) {
-                        bool exists = false;
-                        ABMD5Base abmd5Base = hotUpdateFolderResVersion.ABMD5List[i];
 
-                        for (int j = 0; j < abNamesInHotUpdateFolder.Count; j++) {
-                            if (abmd5Base.AssetName == abNamesInHotUpdateFolder[j]) {
-                                exists = true;
+
+                        string hotUpdateFolder = ResKitUtility.HotUpdateAssetBundleFolder;
+                        DirectoryInfo directoryInfo = new DirectoryInfo(hotUpdateFolder);
+                        FileInfo[] files = directoryInfo.GetFiles("*", SearchOption.AllDirectories);
+
+
+
+
+
+                        ResVersion hotUpdateFolderResVersion = HotUpdateConfig.LoadHotUpdateAssetBundlesFolderResVersion();
+                        List<string> abNamesInHotUpdateFolder = new List<string>();
+
+                        for (int i = 0; i < hotUpdateFolderResVersion.ABMD5List.Count; i++)
+                        {
+                            ABMD5Base abmd5Base = hotUpdateFolderResVersion.ABMD5List[i];
+
+                            for (int j = 0; j < files.Length; j++)
+                            {
+                                //get file's "real name" (e.g.: AssetName: xxx/yyy, realName: yyy)
+                                string realName = abmd5Base.AssetName.Substring(abmd5Base.AssetName.LastIndexOf('/') + 1);
+
+                                if (files[j].Name == realName)
+                                {
+                                    AssetBundleData assetBundleData = new AssetBundleData()
+                                    {
+                                        Name = abmd5Base.AssetName,
+                                        MD5 = abmd5Base.MD5,
+                                        LoadOption = AssetBundleLoadOption.FromHotUpdateFolder
+                                    };
+                                    abNamesInHotUpdateFolder.Add(abmd5Base.AssetName);
+                                    AssetBundleDatas.Add(assetBundleData);
+                                    break;
+                                }
                             }
                         }
 
-                        if (!exists) {
-                            AssetBundleData assetBundleData = new AssetBundleData()
+                        for (int i = 0; i < hotUpdateFolderResVersion.ABMD5List.Count; i++)
+                        {
+                            bool exists = false;
+                            ABMD5Base abmd5Base = hotUpdateFolderResVersion.ABMD5List[i];
+
+                            for (int j = 0; j < abNamesInHotUpdateFolder.Count; j++)
                             {
-                                Name = abmd5Base.AssetName,
-                                MD5 = abmd5Base.MD5,
-                                LoadOption = AssetBundleLoadOption.FromLocalFolder
-                            };
-                            AssetBundleDatas.Add(assetBundleData);
+                                if (abmd5Base.AssetName == abNamesInHotUpdateFolder[j])
+                                {
+                                    exists = true;
+                                }
+                            }
+
+                            if (!exists)
+                            {
+                                AssetBundleData assetBundleData = new AssetBundleData()
+                                {
+                                    Name = abmd5Base.AssetName,
+                                    MD5 = abmd5Base.MD5,
+                                    LoadOption = AssetBundleLoadOption.FromLocalFolder
+                                };
+                                AssetBundleDatas.Add(assetBundleData);
+                            }
                         }
+
+                        UpdateManifest();
                     }
                 }
+                else { //no hotupdate manager, local from local
+
+                    if (manifest == null) {
+                        AssetBundleDatas.Add(new AssetBundleData()
+                        {
+                            Name = ResKitUtility.CurrentPlatformName,
+                            LoadOption = AssetBundleLoadOption.FromLocalFolder
+                        });
+
+                        UpdateManifest();
+
+                        foreach (string bundleName in manifest.GetAllAssetBundles())
+                        {
+                            Debug.Log(bundleName);
+                            AssetBundleDatas.Add(new AssetBundleData()
+                            {
+                                Name = bundleName,
+                                LoadOption = AssetBundleLoadOption.FromLocalFolder
+                            });
+                        }
+
+
+                    }
+                    
+                    
+                }
+                
+
             }
         }
     }

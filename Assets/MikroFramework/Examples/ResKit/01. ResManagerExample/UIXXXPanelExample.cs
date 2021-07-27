@@ -8,7 +8,7 @@ namespace MikroFramework.Examples
     public class UIXXXPanelExample : MonoBehaviour {
         private AudioClip audioClip = null;
 
-        private ResLoader resLoader = new ResLoader();
+        private ResLoader resLoader;
 #if UNITY_EDITOR
         [UnityEditor.MenuItem("MikroFramework/Examples/ResLoader/ResourcesExample/01. Load&Unload Resources", false, 1)]
         private static void MenuItem()
@@ -21,6 +21,7 @@ namespace MikroFramework.Examples
 
         // Start is called before the first frame update
         void Start() {
+            resLoader = new ResLoader();
             resLoader.LoadSync<AudioClip>("resources://War loop");
             resLoader.LoadSync<AudioClip>("resources://Lose");
         }
@@ -41,10 +42,10 @@ namespace MikroFramework.Examples
 
 
     public class UIYYYPanel : MonoBehaviour {
-        private ResLoader resLoader = new ResLoader();
+        private ResLoader resLoader;
         // Start is called before the first frame update
-        void Start()
-        {
+        void Start() {
+            resLoader = new ResLoader();
             resLoader.LoadSync<AudioClip>("resources://War loop");
             resLoader.LoadSync<AudioClip>("resources://Lose");
         }

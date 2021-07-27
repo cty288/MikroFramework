@@ -17,9 +17,10 @@ namespace MikroFramework.Examples
 
         }
 #endif
-        private ResLoader resLoader = new ResLoader();
+        private ResLoader resLoader;
 
         IEnumerator Start() {
+            resLoader = new ResLoader();
             yield return new WaitForSeconds(2.0f);
             resLoader.LoadAsync<AudioClip>("resources://War loop", clip => {
                 Debug.Log("Async loaded: "+clip.name);

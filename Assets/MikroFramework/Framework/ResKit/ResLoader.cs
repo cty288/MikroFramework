@@ -1,17 +1,27 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using MikroFramework.Architecture;
 using MikroFramework.Examples;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace MikroFramework.ResKit
 {
-    public class ResLoader {
+    public class ResLoader:IUtility {
 
 
         private List<Res> recordedRes = new List<Res>();
 
+
+        public ResLoader() {
+            if (!ResData.Exists) {
+                //resdata does not exist, initialize a new resdata
+                ResData.Singleton.Init((error) => {
+                    Debug.LogError(error);
+                });
+            }
+        }
 
         #region Helpers
         private Res GetResFromRecord(string assetName)

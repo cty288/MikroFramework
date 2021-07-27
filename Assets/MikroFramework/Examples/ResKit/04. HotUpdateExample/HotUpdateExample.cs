@@ -4,14 +4,25 @@ using System.Collections.Generic;
 using MikroFramework.ResKit;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace MikroFramework
 {
     public class HotUpdateExample : MonoBehaviour
     {
-
+        public Text downloadText;
         void Start() {
+            HotUpdateManager.Singleton.EnableUpdateDownloadSpeed(0.05f);
             StartCoroutine(HotUpdateSimpleTest(LoadAssets));
+        }
+
+
+        void Update() {
+            downloadText.text = $"Total downloaded progress: {HotUpdateManager.Singleton.GetDownloadProgress()}" +
+                                $"\n Total downloading size: {HotUpdateManager.Singleton.GetTotalDownloadFileSize()}" +
+                                $"\n Already downloaded size: {HotUpdateManager.Singleton.GetAlreadyDownloadedFileSize()}" +
+                                $"\n Downloading file size: {HotUpdateManager.Singleton.GetDownloadingFileSize()}" +
+                                $"\n Download speed (kb/s): {HotUpdateManager.Singleton.GetDownloadSpeed()}";
         }
 
         private void LoadAssets() {
@@ -20,17 +31,22 @@ namespace MikroFramework
 
             //SceneManager.LoadSceneAsync("HotUpdateExampleScene");
 
-            resLoader.LoadAsync<Texture2D>("reskit/test", "Asteroid_1", (obj) => {
-                Debug.Log(obj.name);
-            });
+           // resLoader.LoadAsync<Texture2D>("reskit/test", "Asteroid_1", (obj) => {
+              //  Debug.Log(obj.name);
+          //  });
 
             //resLoader.LoadAsync<GameObject>("mftest", "TestABObj", (obj) => {
             // Instantiate(obj);
             // });
 
-            // resLoader.LoadAsync<GameObject>("mftest2", "TestABObj", (obj) => {
-            //  Instantiate(obj);
-            // });
+             resLoader.LoadAsync<GameObject>("mftest2", "TestABObj", (obj) => {
+              Instantiate(obj);
+             });
+
+
+             resLoader.LoadAsync<GameObject>("mftest", "Cylinder", (obj) => {
+                 Instantiate(obj);
+             });
 
         }
         
@@ -39,6 +55,7 @@ namespace MikroFramework
         {
             //Application.OpenURL(Application.persistentDataPath);
             bool finished = false;
+
 
             HotUpdateManager.Singleton.Init(() => {
                 HotUpdateManager.Singleton.HasNewVersionRes((needUpdate, resVersion) => {

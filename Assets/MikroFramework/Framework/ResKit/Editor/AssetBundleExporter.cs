@@ -43,6 +43,7 @@ namespace MikroFramework.ResKit
 
             BuildPipeline.BuildAssetBundles(outputPath, BuildAssetBundleOptions.ChunkBasedCompression,
                 EditorUserBuildSettings.activeBuildTarget);
+
             AssetDatabase.Refresh();
 
             EditorUtility.OpenInFolder(outputPath);

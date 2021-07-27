@@ -17,10 +17,12 @@ namespace MikroFramework
             new GameObject("Load Assets from AB Test").AddComponent<LoadABAssetExample>();
         }
 #endif
-        private ResLoader resLoader = new ResLoader();
+        private ResLoader resLoader;
 
         void Start() {
-            var texture= resLoader.LoadSync<Texture2D>("test_sprite", "Asteroid_1");
+            resLoader = new ResLoader();
+
+            var texture= resLoader.LoadSync<Texture2D>("mftest", "Asteroid_1");
 
             Debug.Log(texture.name);
 

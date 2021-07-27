@@ -1,22 +1,18 @@
 ManifestFileVersion: 0
-CRC: 809340843
+CRC: 438272157
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
       Name: mftest
-      Dependencies:
-        Dependency_0: reskit/test.ab
+      Dependencies: {}
     Info_1:
       Name: test_sphere
       Dependencies: {}
     Info_2:
       Name: mftest2
       Dependencies:
-        Dependency_0: reskit/test.ab
+        Dependency_0: mftest
     Info_3:
       Name: scene
       Dependencies:
         Dependency_0: mftest2
-    Info_4:
-      Name: reskit/test.ab
-      Dependencies: {}

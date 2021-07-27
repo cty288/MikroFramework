@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3742536446
+CRC: 1213233544
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 256fca5494124a69536fe415a57a8791
+    Hash: 9e7a353d10115dd2b8176bbfef80d115
   TypeTreeHash:
     serializedVersion: 2
     Hash: c5c62297f918cbde3d304172cfcc3a61
@@ -25,4 +25,4 @@ SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/MikroFramework/Examples/ResKit/04. HotUpdateExample/TestABObj.prefab
 Dependencies:
-- D:/programming/unity/projects/MikroFramework/Assets/AssetBundleBuilds/0.1/Windows/reskit/test.ab
+- D:/programming/unity/projects/MikroFramework/Assets/AssetBundleBuilds/0.1/Windows/mftest

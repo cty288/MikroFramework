@@ -28,9 +28,10 @@ namespace MikroFramework.Examples
         }
 #endif
         private AssetBundle bundle;
-        private ResLoader resLoader = new ResLoader();
+        private ResLoader resLoader;
 
         void Start() {
+            resLoader = new ResLoader();
             HotUpdateManager.Singleton.ValidateHotUpdateState(() => {
                 bundle = resLoader.LoadSync<AssetBundle>("mftest");
 

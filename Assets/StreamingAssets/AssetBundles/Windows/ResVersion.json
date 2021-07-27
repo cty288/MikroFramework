@@ -1,20 +1,25 @@
 {
-    "Version": "0.8",
+    "Version": "0.1",
     "ABMD5List": [
         {
             "AssetName": "mftest",
-            "MD5": "f47e5771198d6729696c699bf7ab2178",
-            "FileSize": 917.056640625
+            "MD5": "dd6cee74073bed74dc7784f5039a5b1e",
+            "FileSize": 988.1298828125
         },
         {
             "AssetName": "mftest2",
-            "MD5": "f211c37336b326a3cb58b886f411aee7",
-            "FileSize": 3.875
+            "MD5": "1bddcd16066fe589cef4828dc2328add",
+            "FileSize": 3.8740234375
         },
         {
             "AssetName": "scene",
-            "MD5": "8901e6db7015146295a5c4e489563e76",
-            "FileSize": 109.634765625
+            "MD5": "9c09fc78a40a6e51ccd09bce96c78422",
+            "FileSize": 109.63671875
+        },
+        {
+            "AssetName": "scene_test",
+            "MD5": "859aff9f425d97eb885325e92e4229c6",
+            "FileSize": 49.669921875
         },
         {
             "AssetName": "test_sphere",
@@ -23,13 +28,13 @@
         },
         {
             "AssetName": "Windows",
-            "MD5": "0e39a6c8a1cefa9cbbf03ef27b4a3f10",
-            "FileSize": 1.6650390625
+            "MD5": "e84333737b33d9dfad86f8b188decd52",
+            "FileSize": 1.6708984375
         },
         {
-            "AssetName": "reskit/test",
-            "MD5": "35abe01ee779e4ddd87e3a432829d11d",
-            "FileSize": 33.7158203125
+            "AssetName": "test/scene_test.ab",
+            "MD5": "437c3785f6d8d58d67e765364b4bd7a0",
+            "FileSize": 131.955078125
         }
     ]
 }

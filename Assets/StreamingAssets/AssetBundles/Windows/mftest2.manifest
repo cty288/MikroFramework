@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 543469338
+CRC: 1213233544
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 6b5ae4d2b6d70775728460eb91ea56c0
+    Hash: 9e7a353d10115dd2b8176bbfef80d115
   TypeTreeHash:
     serializedVersion: 2
     Hash: c5c62297f918cbde3d304172cfcc3a61
@@ -25,4 +25,4 @@ SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/MikroFramework/Examples/ResKit/04. HotUpdateExample/TestABObj.prefab
 Dependencies:
-- D:/programming/unity/projects/MikroFramework/Assets/StreamingAssets/AssetBundles/Windows/test_sprite
+- D:/programming/unity/projects/MikroFramework/Assets/StreamingAssets/AssetBundles/Windows/mftest
