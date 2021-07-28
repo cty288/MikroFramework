@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/MikroFramework/Examples/ResKit/06. LoadSceneABExample/TestABScene.unity
     guid: a047158aec8d4544489c4383ddb6783d
+  - enabled: 1
+    path: Assets/MikroFramework/Examples/Pool/03. GameObjectPoolsManager/PoolManagerScene2.unity
+    guid: ea684082b7fab71418375c0de89a0f31
   m_configObjects: {}

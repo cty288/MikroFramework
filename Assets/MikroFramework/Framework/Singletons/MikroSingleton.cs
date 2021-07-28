@@ -1,4 +1,4 @@
-using System;
+ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
@@ -10,7 +10,7 @@ namespace MikroFramework.Singletons {
     /// Use MonoMikroSingleton for singletons to inherit MonoBehavior
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class MikroSingleton<T> where T: MikroSingleton<T> {
+    public abstract class MikroSingleton<T>: ISingleton where T: MikroSingleton<T> {
         protected static T instance;
         public static T Singleton {
             get {

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using MikroFramework.Event;
 using MikroFramework.Extensions;
+using MikroFramework.Pool;
 using MikroFramework.Utilities;
 using UnityEngine;
 using EventType = MikroFramework.Event.EventType;
@@ -12,13 +13,13 @@ namespace MikroFramework {
         #region Event System Integrated
         private List<CallbackRecord> registeredEventRecorder = new List<CallbackRecord>();
 
-        private SimpleObjectPool<CallbackRecord> callbackRecordPool = new SimpleObjectPool<CallbackRecord>(
+        private SimpleObjectPool<CallbackRecord> callbackRecordObjectPool = new SimpleObjectPool<CallbackRecord>(
             () => { return new CallbackRecord();});
 
         private class CallbackRecord
         {
             /*
-            private static Stack<CallbackRecord> callbackRecordPool = new Stack<CallbackRecord>();
+            private static Stack<CallbackRecord> callbackRecordObjectPool = new Stack<CallbackRecord>();
 
             public CallbackRecord()
             {
@@ -26,9 +27,9 @@ namespace MikroFramework {
             }
 
             public static CallbackRecord Allocate(EventType eventType, Action<MikroMessage> onEventReceived) {
-                if (callbackRecordPool.Count > 0)
+                if (callbackRecordObjectPool.Count > 0)
                 {
-                    CallbackRecord record = callbackRecordPool.Pop();
+                    CallbackRecord record = callbackRecordObjectPool.Pop();
                     record.EventType = eventType;
                     record.OnEventReceived = onEventReceived;
                     return record;
@@ -41,7 +42,7 @@ namespace MikroFramework {
             {
                 EventType = EventType.None;
                 OnEventReceived = null;
-                callbackRecordPool.Push(this);
+                callbackRecordObjectPool.Push(this);
             }*/
 
             public EventType EventType;
@@ -56,7 +57,7 @@ namespace MikroFramework {
         public void AddListener(EventType eventType, Action<MikroMessage> callBack)
         {
             EventCenter.AddListener(eventType, callBack);
-            CallbackRecord record= callbackRecordPool.Allocate();
+            CallbackRecord record= callbackRecordObjectPool.Allocate();
             record.EventType = eventType;
             record.OnEventReceived = callBack;
            
@@ -76,7 +77,7 @@ namespace MikroFramework {
 
             selectedRecords.ForEach(record => {
                 EventCenter.RemoveListener(record.EventType, record.OnEventReceived);
-                callbackRecordPool.Recycle(record);
+                callbackRecordObjectPool.Recycle(record);
                 registeredEventRecorder.Remove(record);
                 //record.Recycle();
             });
@@ -96,7 +97,7 @@ namespace MikroFramework {
 
             selectedRecords.ForEach(record => {
                 EventCenter.RemoveListener(record.EventType, record.OnEventReceived);
-                callbackRecordPool.Recycle(record);
+                callbackRecordObjectPool.Recycle(record);
                 registeredEventRecorder.Remove(record);
                 //record.Recycle();
             });
@@ -123,7 +124,7 @@ namespace MikroFramework {
             foreach (var eventRecord in registeredEventRecorder)
             {
                 EventCenter.RemoveListener(eventRecord.EventType, eventRecord.OnEventReceived);
-                callbackRecordPool.Recycle(eventRecord);
+                callbackRecordObjectPool.Recycle(eventRecord);
                 //eventRecord.Recycle();
             }
             registeredEventRecorder.Clear();

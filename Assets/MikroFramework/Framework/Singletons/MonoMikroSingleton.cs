@@ -9,7 +9,7 @@ namespace MikroFramework.Singletons {
     /// Use MonoMikroSingleton for persistent singletons to inherit MonoBehavior
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class MonoPersistentMikroSingleton<T> : MonoMikroSingleton<T> where T : MonoPersistentMikroSingleton<T> {
+    public class MonoPersistentMikroSingleton<T> : MonoMikroSingleton<T>, ISingleton where T : MonoPersistentMikroSingleton<T> {
 
         protected static T instance=null;
 
@@ -17,7 +17,7 @@ namespace MikroFramework.Singletons {
         public static T Singleton {
             get
             {
-                if (instance == null) {
+                if (instance == null|| FindObjectOfType<T>()==null) {
                     instance = FindObjectOfType<T>();
 
                     if (FindObjectsOfType<T>().Length > 1) {
@@ -53,7 +53,7 @@ namespace MikroFramework.Singletons {
     /// Use MonoMikroSingleton for singletons to inherit MonoBehavior
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class MonoMikroSingleton<T> : MonoBehaviour where T : MonoMikroSingleton<T>
+    public class MonoMikroSingleton<T> : MonoBehaviour,ISingleton where T : MonoMikroSingleton<T>
     {
 
         protected static T instance = null;
@@ -72,7 +72,7 @@ namespace MikroFramework.Singletons {
         {
             get
             {
-                if (instance == null)
+                if (instance == null || FindObjectOfType<T>()==null)
                 {
                     instance = FindObjectOfType<T>();
 

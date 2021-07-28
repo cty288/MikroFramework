@@ -27,5 +27,20 @@ namespace MikroFramework.Utilities {
             Version v2 = new Version(oldVersion);
             return v1 > v2;
         }
+
+        /// <summary>
+        /// Delete the "(Clone)" text on object's name if the object is cloned
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static string DeleteCloneName(GameObject obj) {
+            int cloneNameStartIndex = obj.name.IndexOf("(Clone)");
+            if (cloneNameStartIndex >= 0)
+            {
+                return obj.name.Substring(0, cloneNameStartIndex);
+            }
+
+            return obj.name;
+        }
     }
 }
