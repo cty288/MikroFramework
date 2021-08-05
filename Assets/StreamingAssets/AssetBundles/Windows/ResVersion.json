@@ -17,11 +17,6 @@
             "FileSize": 109.63671875
         },
         {
-            "AssetName": "scene_test",
-            "MD5": "859aff9f425d97eb885325e92e4229c6",
-            "FileSize": 49.669921875
-        },
-        {
             "AssetName": "test_sphere",
             "MD5": "a7ba4b4b27ec6a6bdc7ce69aa7fe2e47",
             "FileSize": 40.447265625
@@ -33,8 +28,8 @@
         },
         {
             "AssetName": "test/scene_test.ab",
-            "MD5": "437c3785f6d8d58d67e765364b4bd7a0",
-            "FileSize": 131.955078125
+            "MD5": "28a557612b6b5d23da1b747940531412",
+            "FileSize": 49.6767578125
         }
     ]
 }

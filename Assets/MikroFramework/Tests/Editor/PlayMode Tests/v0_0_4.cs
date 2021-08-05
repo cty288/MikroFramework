@@ -12,6 +12,7 @@ namespace MikroFramework.Test {
             private SingletonTestClass() {
 
             }
+
         }
         // A Test behaves as an ordinary method
         [Test]

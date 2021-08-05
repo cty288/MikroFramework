@@ -58,7 +58,7 @@ namespace MikroFramework.Test {
 
             yield return new WaitUntil(() => loadCount == 2);
 
-            Res result= ResManager.Singleton.SharedLoadedResources.Find(res => res.Name == "mftest");
+            Res result= ResManager.GetSharedLoadedRes().Find(res => res.Name == "mftest");
 
             Assert.AreEqual(1,result.RefCount);
 
@@ -68,14 +68,14 @@ namespace MikroFramework.Test {
                     loadCount++;
                 });
             
-            result = ResManager.Singleton.SharedLoadedResources.Find(res => res.Name == "mftest");
+            result = ResManager.GetSharedLoadedRes().Find(res => res.Name == "mftest");
 
             Assert.AreEqual(2, result.RefCount);
 
             resLoade2.ReleaseAllAssets();
             resLoader.ReleaseAllAssets();
 
-            Assert.False(ResManager.Singleton.SharedLoadedResources.Any(res => res.Name == "mftest"));
+            Assert.False(ResManager.GetSharedLoadedRes().Any(res => res.Name == "mftest"));
         }
 
         [UnityTest]
