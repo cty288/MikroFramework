@@ -15,25 +15,27 @@ namespace MikroFramework.ResKit
         /// Allocate a ResourceRes object from the object pool
         /// </summary>
         /// <returns></returns>
-        public static ResourcesRes Allocate(string assetPath) {
+        public static ResourcesRes Allocate(string assetPath, Type resType) {
             ResourcesRes res = SafeObjectPool<ResourcesRes>.Singleton.Allocate();
 
             res.AssetPath = assetPath.Substring("resources://".Length);
             res.Name = assetPath;
+            res.ResType = resType;
+            
             return res;
         }
 
 
         public override bool LoadSync() {
             State = ResState.Loading;
-            Asset = Resources.Load(AssetPath);
+            Asset = Resources.Load(AssetPath,ResType);
             State = ResState.Loaded;
             return Asset;
         }
 
         public override void LoadAsync() {
             State = ResState.Loading;
-            var request = Resources.LoadAsync(AssetPath);
+            var request = Resources.LoadAsync(AssetPath,ResType);
             request.completed += operation => {
                 Asset = request.asset;
                 State = ResState.Loaded;
@@ -52,7 +54,6 @@ namespace MikroFramework.ResKit
             }
 
             Asset = null;
-            ResManager.RemoveSharedRes(this);
         }
 
         public override void RecycleToCache() {

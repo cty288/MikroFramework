@@ -5,8 +5,10 @@ using UnityEngine;
 
 
 namespace MikroFramework.ServiceLocator {
-    public class ModuleContainerModule : IEditorPlatformModule
-    {
+    public class ModuleContainerModule : IEditorPlatformModule {
+        public EditorPlatformElement ElementInfo { get; } =
+            new EditorPlatformElement(1, "Module Container - Instructions");
+
         public void OnGUI() {
             GUILayout.Label("How to use ModuleContainer", new GUIStyle() {
                 fontSize = 20,

@@ -13,8 +13,9 @@ namespace MikroFramework.Managers
     /// check new version-download updated files-validate completeness-delete redundant files).
     /// The complete cycle will automatically start at the beginning of the released mode, with callback functions for each phrase
     /// </summary>
-    public abstract class HotUpdateEntranceManager : EntranceManager
-    {
+    public abstract class HotUpdateEntranceManager : EntranceManager {
+
+        protected ResLoader resLoader;
         /// <summary>
         /// The complete cycle of hot-updating will always run in the released mode
         /// </summary>
@@ -72,8 +73,10 @@ namespace MikroFramework.Managers
 
         private void DeleteRedundantFiles() {
             HotUpdateManager.Singleton.DeleteRedundantFiles(() => {
+                resLoader = new ResLoader();
                 OnRedundantFilesDeleted();
                 OnHotUpdateComplete();
+                
             },OnHotUpdateError);
         }
 
@@ -82,9 +85,9 @@ namespace MikroFramework.Managers
         /// </summary>
         public virtual void Update() {
             if (downloading) {
-                OnHotUpdateResourcesDownloading(HotUpdateManager.Singleton.GetDownloadProgress(),
-                    HotUpdateManager.Singleton.GetTotalDownloadFileSize(), HotUpdateManager.Singleton.GetAlreadyDownloadedFileSize(),
-                    HotUpdateManager.Singleton.GetDownloadingFileSize(), HotUpdateManager.Singleton.GetDownloadSpeed());
+                OnHotUpdateResourcesDownloading(HotUpdateManager.Singleton.Downloader.GetDownloadProgress(),
+                    HotUpdateManager.Singleton.Downloader.GetTotalDownloadFileSize(), HotUpdateManager.Singleton.Downloader.GetAlreadyDownloadedFileSize(),
+                    HotUpdateManager.Singleton.Downloader.GetDownloadingFileSize(), HotUpdateManager.Singleton.Downloader.GetDownloadSpeed());
             }
         }
 
@@ -100,12 +103,16 @@ namespace MikroFramework.Managers
         /// Callback function invoked when any error occurs during the hot-updating phrase
         /// </summary>
         /// <param name="error"></param>
-        protected abstract void OnHotUpdateError(HotUpdateError error);
+        protected virtual void OnHotUpdateError(HotUpdateError error) {
+
+        }
 
         /// <summary>
         /// Callback function invoked when the hot-update manager is initialized
         /// </summary>
-        protected abstract void OnHotUpdateManagerInitialized();
+        protected virtual void OnHotUpdateManagerInitialized() {
+
+        }
 
         /// <summary>
         /// Callback invoked when the Hot-update version is checked
@@ -113,7 +120,9 @@ namespace MikroFramework.Managers
         /// <param name="needUpdate">Does the current game need to be updated?</param>
         /// <param name="localResVersion">The local ResVersion (contains local AB file infos) file</param>
 
-        protected abstract void OnHotUpdateVersionChecked(bool needUpdate, ResVersion localResVersion);
+        protected virtual void OnHotUpdateVersionChecked(bool needUpdate, ResVersion localResVersion) {
+
+        }
 
         /// <summary>
         /// Callback invoked every frame when resources are downloading and updating
@@ -123,24 +132,32 @@ namespace MikroFramework.Managers
         /// <param name="alreadyDownloadedFileSize">The combined size of all files that have completely downloaded (not including files that are downloading) of the current download queue</param>
         /// <param name="downloadingFileDownloadedSize">The downloaded size of the current downloading file (not complete)</param>
         /// <param name="downloadSpeed">Current download speed</param>
-        protected abstract void OnHotUpdateResourcesDownloading(float downloadProgress, float totalDownloadSize,
-            float alreadyDownloadedFileSize, float downloadingFileDownloadedSize, float downloadSpeed);
+        protected virtual void OnHotUpdateResourcesDownloading(float downloadProgress, float totalDownloadSize,
+            float alreadyDownloadedFileSize, float downloadingFileDownloadedSize, float downloadSpeed) {
+
+        }
 
         /// <summary>
         /// Invoked when resources are successfully downloaded and updated on the local device
         /// </summary>
-        protected abstract void OnHotUpdateResourceDownloadedAndUpdated();
+        protected virtual void OnHotUpdateResourceDownloadedAndUpdated() {
+
+        }
 
         /// <summary>
         /// Invoked when the completeness of all local resources has been validated
         /// </summary>
         /// <param name="updatedResourceInfos">Infos of files that have been updated (null if all original files are complete)</param>
-        protected abstract void OnResourceCompletenessValidated(List<ABMD5Base> updatedResourceInfos);
+        protected virtual void OnResourceCompletenessValidated(List<ABMD5Base> updatedResourceInfos) {
+
+        }
 
         /// <summary>
         /// Invoked when redundant files are deleted from the local device
         /// </summary>
-        protected abstract void OnRedundantFilesDeleted();
+        protected virtual void OnRedundantFilesDeleted() {
+
+        }
 
         /// <summary>
         /// Invoked after the complete hot-update cycle has completed

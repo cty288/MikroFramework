@@ -41,4 +41,4 @@ SerializeReferenceClassIdentifiers: []
 Assets:
 - Assets/MikroFramework/Examples/ResKit/04. HotUpdateExample/HotUpdateExampleScene.unity
 Dependencies:
-- D:/programming/unity/projects/MikroFramework/Assets/StreamingAssets/AssetBundles/Windows/mftest2
+- D:/programming/unity/projects/MikroFramework/Assets/AssetBundleBuilds/0.1/Windows/mftest2

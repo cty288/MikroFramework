@@ -2,8 +2,6 @@
 
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -12,19 +10,19 @@ namespace MikroFramework.Utilities {
     {
         private static string GenerateBuildPackageName() {
             AddCurrentFrameworkBuildVersion();
-            return "Builds/MikroFramework_build_v." + GetCurrentFrameworkVersionString() + ".unitypackage";
+            return "Builds/MikroFramework_v." + GetCurrentFrameworkVersionString() + ".unitypackage";
         }
 
         private static string GenerateMinorPackageName()
         {
             AddCurrentFrameworkMinorVersion();
-            return "Builds/MikroFramework_build_v." + GetCurrentFrameworkVersionString() + ".unitypackage";
+            return "Builds/MikroFramework_v." + GetCurrentFrameworkVersionString() + ".unitypackage";
         }
 
         private static string GenerateMajorPackageName()
         {
             AddCurrentFrameworkMajorVersion();
-            return "Builds/MikroFramework_build_v." + GetCurrentFrameworkVersionString() + ".unitypackage";
+            return "Builds/MikroFramework_v." + GetCurrentFrameworkVersionString() + ".unitypackage";
         }
 
         private static void AddCurrentFrameworkBuildVersion() {

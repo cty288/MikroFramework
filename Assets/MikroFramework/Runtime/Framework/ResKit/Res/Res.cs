@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MikroFramework.Event;
 using MikroFramework.Pool;
 using MikroFramework.Utilities;
 using UnityEngine;
@@ -39,7 +40,7 @@ namespace MikroFramework.ResKit
                 state = value;
 
                 if (state == ResState.Loaded) {
-                    onLoadedEvent?.Invoke(this);
+                    onLoadedEvent.Trigger(this);
                 }
             }
         }
@@ -62,7 +63,10 @@ namespace MikroFramework.ResKit
             protected set;
         }
 
-        
+        /// <summary>
+        /// Type of this Res
+        /// </summary>
+        public Type ResType { get; set; }
 
         /// <summary>
         /// Load the resource
@@ -85,18 +89,23 @@ namespace MikroFramework.ResKit
             if (state == ResState.Loading) {
                 return;
             }
-
+            ResManager.RemoveSharedRes(this);
             OnReleaseRes();
         }
 
-        private event Action<Res> onLoadedEvent;
+        public virtual bool MatchResSearchKeysWithoutName(ResSearchKeys resSearchKeys) {
+            return resSearchKeys.ResType == ResType;
+        }
+
+
+        private EventProperty<Res> onLoadedEvent=new EventProperty<Res>();
 
         /// <summary>
-        /// Register a listener to the event of this Resource that triggered when the resource is loaded
+        /// RegisterInstance a listener to the event of this Resource that triggered when the resource is loaded
         /// </summary>
         /// <param name="onLoaded"></param>
         public void RegisterOnLoadedEvent(Action<Res> onLoaded) {
-            onLoadedEvent += onLoaded;
+            onLoadedEvent.Register(onLoaded);
         }
 
         /// <summary>
@@ -104,7 +113,7 @@ namespace MikroFramework.ResKit
         /// </summary>
         /// <param name="onLoaded"></param>
         public void UnRegisterOnLoadedEvent(Action<Res> onLoaded) {
-            onLoadedEvent -= onLoaded;
+            onLoadedEvent.UnRegister(onLoaded);
         }
 
         public virtual void OnRecycled() {

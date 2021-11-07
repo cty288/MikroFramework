@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using MikroFramework.Pool;
+using NHibernate.Criterion.Lambda;
 using UnityEngine;
 
 namespace MikroFramework.Examples
@@ -11,48 +12,50 @@ namespace MikroFramework.Examples
     {
 #if UNITY_EDITOR
         [UnityEditor.MenuItem("MikroFramework/Examples/Pools/01. SafeObjectPoolExample", false, 1)]
-        private static void MenuClicked()
-        {
-            SafeObjectPool<TestPool>.Singleton.Init(0,30);
+        private static void MenuClicked() {
+            
 
-            List<TestPool> allocatedObjs = new List<TestPool>();
+            SafeObjectPool<TestObject>.Singleton.Init(0,30);
+
+            List<TestObject> allocatedObjs = new List<TestObject>();
 
             for (int i = 0; i < 50; i++) {
-                TestPool obj = TestPool.Allocate();
-                obj.Id = i;
+                TestObject obj = TestObject.Allocate(i);
                 Debug.Log($"Allocated Object ID: {obj.Id}");
                 allocatedObjs.Add(obj);
             }
 
             //Thread.Sleep(1000);
 
-            foreach (TestPool allocatedObj in allocatedObjs) {
+            foreach (TestObject allocatedObj in allocatedObjs) {
                 allocatedObj.RecycleToCache();
             }
 
-            TestPool.Allocate();
-            Debug.Log(SafeObjectPool<TestPool>.Singleton.CurrentCount);
+            TestObject.Allocate(100);
+            Debug.Log(SafeObjectPool<TestObject>.Singleton.CurrentCount);
             
         }
 #endif
 
 
-        private class TestPool:IPoolable {
-            public int Id = 0;
-
-
+        private class TestObject:IPoolable {
+            public int Id;
             public void OnRecycled() {
+                Debug.Log("23333");
             }
 
             public bool IsRecycled { get; set; }
 
             public void RecycleToCache() {
-                SafeObjectPool<TestPool>.Singleton.Recycle(this);
+                SafeObjectPool<TestObject>.Singleton.Recycle(this);
             }
 
-            public static TestPool Allocate() {
-                return SafeObjectPool<TestPool>.Singleton.Allocate();
+            public static TestObject Allocate(int id) {
+                TestObject obj = SafeObjectPool<TestObject>.Singleton.Allocate();
+                obj.Id = id;
+                return obj;
             }
+
         }
     }
 }

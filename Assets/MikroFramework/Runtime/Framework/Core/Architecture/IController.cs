@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace MikroFramework.Architecture
 {
-    public interface IController : IBelongToArchitecture, ICanSendCommand, ICanGetSystem, ICanGetModel, ICanRegisterEvent {
+    public interface IController : IBelongToArchitecture, ICanSendCommand, ICanGetSystem, ICanGetModel, ICanRegisterEvent,
+    ICanSendQuery{
         
     }
 }

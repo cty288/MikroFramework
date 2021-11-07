@@ -1,10 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using MikroFramework.Pool;
 using UnityEngine;
 
 namespace MikroFramework.Architecture
 {
-    public abstract class AbstractCommand : ICommand
+    /// <summary>
+    /// Non-async command
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public abstract class AbstractCommand<T> : ICommand where T: AbstractCommand<T>, new()
     {
         private IArchitecture architectureModel;
 
@@ -19,15 +24,26 @@ namespace MikroFramework.Architecture
         }
 
 
-        void ICommand.Execute(params object[] parameters) {
-            OnExecute(parameters);
+        void ICommand.Execute() {
+            OnExecute();
+            RecycleToCache();
         }
 
         /// <summary>
         /// Execute this command
         /// </summary>
         /// <param name="parameters"></param>
-        protected abstract void OnExecute(params object[] parameters);
+        protected abstract void OnExecute();
+
+        public virtual void OnRecycled() {
+            architectureModel = null;
+        }
+
+        public bool IsRecycled { get; set; }
+
+        public void RecycleToCache() {
+            SafeObjectPool<T>.Singleton.Recycle(this as T);
+        }
 
        
     }

@@ -21,5 +21,6 @@ namespace MikroFramework.ResKit
         public string AssetName;
         public string MD5;
         public float FileSize;
+        public List<AssetData> assetDatas = new List<AssetData>();
     }
 }

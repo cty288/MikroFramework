@@ -62,13 +62,13 @@ namespace MikroFramework.Architecture
        
 
         /// <summary>
-        /// Register a Model to the current architecture, should be called in the Init function of the current architecture
+        /// RegisterInstance a Model to the current architecture, should be called in the Init function of the current architecture
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="model"></param>
         public void RegisterModel<T>(T model) where T : IModel {
             model.SetArchitecture(this);
-            container.Register<T>(model);
+            container.RegisterInstance<T>(model);
 
             if (!inited) {
                 models.Add(model);
@@ -79,17 +79,17 @@ namespace MikroFramework.Architecture
 
         }
         /// <summary>
-        /// Register an Utility to the current architecture, should be called in the Init function of the current architecture
+        /// RegisterInstance an Utility to the current architecture, should be called in the Init function of the current architecture
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="instance"></param>
         public void RegisterExtensibleUtility<T>(T instance) where T:IUtility {
-            container.Register<T>(instance);
+            container.RegisterInstance<T>(instance);
         }
 
         public void RegisterSystem<T>(T system) where T:ISystem {
             system.SetArchitecture(this);
-            container.Register<T>(system);
+            container.RegisterInstance<T>(system);
 
             if (!inited)
             {
@@ -107,24 +107,25 @@ namespace MikroFramework.Architecture
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         public T GetModel<T>() where T : class, IModel {
-            return container.Get<T>();
+            return container.GetInstance<T>();
         }
 
-        public void SendCommand<T>() where T : ICommand, new(){
-            T command = new T();
+        public void SendCommand<T>() where T : class, ICommand, new() {
+            T command = SafeObjectPool<T>.Singleton.Allocate();
+
             command.SetArchitecture(this);
             command.Execute();
-            command.SetArchitecture(null);
+
         }
 
-        public void SendCommand<T>(T command) where T : ICommand {
+        public void SendCommand<T>(T command) where T : class, ICommand {
             command.SetArchitecture(this);
             command.Execute();
-            command.SetArchitecture(null);
+
         }
 
         public T GetSystem<T>() where T : class, ISystem {
-            return container.Get<T>();
+            return container.GetInstance<T>();
         }
 
         private ITypeEventSystem typeEventSystem = new TypeEventSystem();
@@ -145,13 +146,18 @@ namespace MikroFramework.Architecture
             typeEventSystem.UnRegister<T>(onEvent);
         }
 
+        public TResult SendQuery<TResult>(IQuery<TResult> query) {
+            query.SetArchitecture(this);
+            return query.Do();
+        }
+
         /// <summary>
         /// Get a specific utility of the current architecture, should be called in the Init() function of Model Objects
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         public T GetUtility<T>() where T : class, IUtility {
-            return container.Get<T>();
+            return container.GetInstance<T>();
         }
     }
 }

@@ -46,6 +46,26 @@ namespace MikroFramework.DatabaseKit.NHibernate
             }
         }
 
+        public virtual async Task<IList<T>> GetAll() {
+            try
+            {
+                using (ISession session = NHibernateHelper.Singleton.OpenSession())
+                {
+                    using (ITransaction transaction = session.BeginTransaction())
+                    {
+                        ICriteria criteria = session.CreateCriteria(typeof(T));
+
+                        return await criteria.ListAsync<T>();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Log("Failed to search!");
+                return null;
+            }
+        }
+
         /// <summary>
         /// Search a data from the table, given restrictions
         /// </summary>

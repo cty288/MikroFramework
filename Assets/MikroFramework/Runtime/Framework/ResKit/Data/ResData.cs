@@ -10,21 +10,26 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace MikroFramework.ResKit {
+
+
     /// <summary>
     /// Class that manage Project AB Manifest and saves all AB's load path (from local or hot-update manager)
     /// </summary>
+    [MonoSingletonPath("[FrameworkPersistent]/[ResKit]/ResData")]
     public class ResData : MonoPersistentMikroSingleton<ResData> {
         private static AssetBundleManifest manifest;
         private static AssetBundle manifestBundle;
 
         private Action<HotUpdateError> onError;
 
+       
+
         /// <summary>
         /// Initialize the ResData singleton for hot-update
         /// </summary>
-        public void Init(Action<HotUpdateError> onInitError) {
+        public void Init(Action onFinished, Action<HotUpdateError> onInitError) {
             onError += onInitError;
-            Load();
+            Load(onFinished);
         }
 
         protected override void OnBeforeDestroy() {
@@ -40,11 +45,25 @@ namespace MikroFramework.ResKit {
         /// </summary>
         public List<AssetBundleData> AssetBundleDatas = new List<AssetBundleData>();
 
+        private AssetDataTable assetDataTable = new AssetDataTable();
+
+        /// <summary>
+        /// Get an AssetData only by its name and type, does not need ownerBundleName
+        /// </summary>
+        /// <param name="resSearchKeys"></param>
+        /// <returns></returns>
+        public AssetData GetAssetData(ResSearchKeys resSearchKeys) {
+            AssetData ret= assetDataTable.GetAssetDataByResSearchKeys(resSearchKeys);
+           
+            return ret;
+        }
+
         public string[] GetDirectDependencies(string bundleName) {
             if (ResManager.IsSimulationModeLogic) {
                 return AssetBundleDatas.Find(abData => abData.Name == bundleName)
                     .DependencyBundleNames;
             }
+
             return manifest.GetDirectDependencies(bundleName);
         }
 
@@ -86,8 +105,9 @@ namespace MikroFramework.ResKit {
             }
         }
 
-        private void Load() {
+        private void Load(Action onFinished) {
             AssetBundleDatas.Clear();
+            assetDataTable.Clear();
             if (ResManager.IsSimulationModeLogic) {
 #if UNITY_EDITOR
                 string[] abNames = UnityEditor.AssetDatabase.GetAllAssetBundleNames();
@@ -106,8 +126,11 @@ namespace MikroFramework.ResKit {
 
                         data.Name = assetPath.Split('/').Last().Split('.').First();
                         data.OwnerBundleName = abName;
+                        data.AssetType = UnityEditor.AssetDatabase.GetMainAssetTypeAtPath(assetPath);
 
                         assetBundleData.AssetDataList.Add(data);
+
+                        assetDataTable.Add(data);
                     }
 
                     AssetBundleDatas.Add(assetBundleData);
@@ -124,6 +147,8 @@ namespace MikroFramework.ResKit {
 
                 });
 
+                onFinished?.Invoke();
+
 #endif
             }
             else {
@@ -136,27 +161,28 @@ namespace MikroFramework.ResKit {
                     HotUpdateState hotUpdateState = HotUpdateManager.Singleton.State;
                     if (hotUpdateState == HotUpdateState.NeverUpdated || hotUpdateState == HotUpdateState.Overridden)
                     {
-                        StartCoroutine(HotUpdateDownloader.GetLocalAssetResVersion(resVersion => {
+                        StartCoroutine(HotUpdateManager.Singleton.Downloader.GetLocalAssetResVersion(resVersion => {
                             foreach (ABMD5Base abmd5Base in resVersion.ABMD5List)
                             {
                                 AssetBundleData data = new AssetBundleData()
                                 {
                                     Name = abmd5Base.AssetName,
                                     MD5 = abmd5Base.MD5,
-                                    LoadOption = AssetBundleLoadOption.FromLocalFolder
+                                    LoadOption = AssetBundleLoadOption.FromLocalFolder,
+                                    AssetDataList = abmd5Base.assetDatas 
                                 };
                                 AssetBundleDatas.Add(data);
-
+                                assetDataTable.Add(abmd5Base.assetDatas);
                             }
                             UpdateManifest();
+                            onFinished?.Invoke();
                         }, error => {
                             onError.Invoke(error);
                         }));
                     }
                     else if (hotUpdateState == HotUpdateState.Updated)
                     {
-
-
+                        
 
                         string hotUpdateFolder = ResKitUtility.HotUpdateAssetBundleFolder;
                         DirectoryInfo directoryInfo = new DirectoryInfo(hotUpdateFolder);
@@ -184,10 +210,15 @@ namespace MikroFramework.ResKit {
                                     {
                                         Name = abmd5Base.AssetName,
                                         MD5 = abmd5Base.MD5,
-                                        LoadOption = AssetBundleLoadOption.FromHotUpdateFolder
+                                        LoadOption = AssetBundleLoadOption.FromHotUpdateFolder,
+                                        AssetDataList = abmd5Base.assetDatas
                                     };
+                                    //Debug.Log(abmd5Base.assetDatas);
                                     abNamesInHotUpdateFolder.Add(abmd5Base.AssetName);
                                     AssetBundleDatas.Add(assetBundleData);
+                                    assetDataTable.Add(abmd5Base.assetDatas);
+
+                                   
                                     break;
                                 }
                             }
@@ -212,17 +243,22 @@ namespace MikroFramework.ResKit {
                                 {
                                     Name = abmd5Base.AssetName,
                                     MD5 = abmd5Base.MD5,
-                                    LoadOption = AssetBundleLoadOption.FromLocalFolder
+                                    LoadOption = AssetBundleLoadOption.FromLocalFolder,
+                                    AssetDataList = abmd5Base.assetDatas
                                 };
                                 AssetBundleDatas.Add(assetBundleData);
+                                assetDataTable.Add(abmd5Base.assetDatas);
                             }
                         }
-
+                        foreach (AssetData data in assetDataTable)
+                        {
+                            Debug.Log(data.Name + "     " + data.OwnerBundleName+"    "+data.AssetType.Name);
+                        }
                         UpdateManifest();
+                        onFinished?.Invoke();
                     }
-                }
-                else { //no hotupdate manager, local from local
-
+                }else { //no hotupdate manager, local from local
+                    Debug.Log("No Hotupdate Manager");
                     if (manifest == null) {
                         AssetBundleDatas.Add(new AssetBundleData()
                         {
@@ -232,17 +268,27 @@ namespace MikroFramework.ResKit {
 
                         UpdateManifest();
 
-                        foreach (string bundleName in manifest.GetAllAssetBundles())
-                        {
-                            Debug.Log(bundleName);
-                            AssetBundleDatas.Add(new AssetBundleData()
-                            {
-                                Name = bundleName,
-                                LoadOption = AssetBundleLoadOption.FromLocalFolder
-                            });
+                        if (manifest != null) {
+                            HotUpdateDownloader downloader = new HotUpdateDownloader();
+                            StartCoroutine(downloader.GetLocalAssetResVersion(resVersion => {
+                                foreach (ABMD5Base abmd5Base in resVersion.ABMD5List)
+                                {
+                                    AssetBundleData data = new AssetBundleData()
+                                    {
+                                        Name = abmd5Base.AssetName,
+                                        MD5 = abmd5Base.MD5,
+                                        LoadOption = AssetBundleLoadOption.FromLocalFolder,
+                                        AssetDataList = abmd5Base.assetDatas
+                                    };
+                                    AssetBundleDatas.Add(data);
+                                    assetDataTable.Add(abmd5Base.assetDatas);
+                                }
+                                onFinished?.Invoke();
+                            }, error => {
+                                onError.Invoke(error);
+                            }));
+
                         }
-
-
                     }
                     
                     
@@ -251,5 +297,6 @@ namespace MikroFramework.ResKit {
 
             }
         }
+
     }
 }

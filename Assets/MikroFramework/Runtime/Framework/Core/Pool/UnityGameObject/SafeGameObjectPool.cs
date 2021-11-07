@@ -12,16 +12,19 @@ using UnityEngine;
 namespace MikroFramework.Pool
 {
     //TODO: add extension
-    public class SafeGameObjectPool:GameObjectPool {
+    public class SafeGameObjectPool : GameObjectPool
+    {
 
-        private int initCount = 0;
-        private int maxCount = 50;
+        [SerializeField]
+        protected int initCount = 0;
+        [SerializeField]
+        protected int maxCount = 50;
 
-        private Queue<GameObject> destroyedObjectInQueue;
+        protected Queue<GameObject> destroyedObjectInQueue;
 
         private int numHiddenObjectCreating = 0;
 
-        
+
 
         /// <summary>
         /// Number of Object Instantitated to the Object pool per frame at the initialization process of the object pool
@@ -55,7 +58,8 @@ namespace MikroFramework.Pool
                     {
                         GameObject popedObj = cachedStack.Pop();
 
-                        if (!popedObj.activeInHierarchy) {
+                        if (!popedObj.activeInHierarchy)
+                        {
                             destroyedObjectInQueue.Enqueue(popedObj);
                             destroyingObjs.Value = true;
                         }
@@ -64,15 +68,18 @@ namespace MikroFramework.Pool
             }
         }
 
-        private void Awake() {
+        private void Awake()
+        {
             creatingObjs.RegisterOnValueChaned(value => {
-                if (value) {
+                if (value)
+                {
                     StartCoroutine(InitializeObjectsToGame());
                 }
             }).UnRegisterWhenGameObjectDestroyed(this.gameObject);
 
             destroyingObjs.RegisterOnValueChaned(value => {
-                if (value) {
+                if (value)
+                {
                     StartCoroutine(DestoryObjectsInQueue());
                 }
             }).UnRegisterWhenGameObjectDestroyed(this.gameObject);
@@ -83,10 +90,12 @@ namespace MikroFramework.Pool
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public override bool Recycle(GameObject obj) {
+        public override bool Recycle(GameObject obj)
+        {
             CheckInited();
 
-            if (obj && pooledPrefab) {
+            if (obj && pooledPrefab)
+            {
                 if (obj.name != pooledPrefab.name)
                 {
                     Debug.LogError($"{obj.name} recycled to the wrong ObjectPool!");
@@ -114,34 +123,39 @@ namespace MikroFramework.Pool
                     return false;
                 }
             }
-            else {
+            else
+            {
                 Debug.LogWarning("A Prefab is missing but the SafeGameObjectPool is still trying to access it!");
                 return false;
             }
-            
-            
+
+
         }
 
         /// <summary>
         /// Allocate a gameobject from the pool and set active
         /// </summary>
         /// <returns></returns>
-        public override GameObject Allocate() {
+        public override GameObject Allocate()
+        {
             CheckInited();
             GameObject createdObj = base.Allocate();
-            if (createdObj) {
+            if (createdObj)
+            {
                 createdObj.transform.SetParent(this.transform);
                 createdObj.SetActive(true);
                 createdObj.GetComponent<PoolableGameObject>().Pool = this;
             }
-            else {
+            else
+            {
                 Debug.LogWarning("A Prefab is missing but the SafeGameObjectPool is still trying to access it!");
             }
-            
+
             return createdObj;
         }
 
-        protected override void Init(GameObject pooledPrefab) {
+        protected override void Init(GameObject pooledPrefab)
+        {
             destroyedObjectInQueue = new Queue<GameObject>(maxCount);
             Init(pooledPrefab, 0, 50);
         }
@@ -152,8 +166,9 @@ namespace MikroFramework.Pool
         /// </summary>
         /// <param name="initCount"></param>
         /// <param name="maxCount"></param>
-        public SafeGameObjectPool Init(int initCount = 0, int maxCount = 50) {
-            Init(pooledPrefab,initCount,maxCount);
+        public SafeGameObjectPool Init(int initCount = 0, int maxCount = 50)
+        {
+            Init(pooledPrefab, initCount, maxCount);
             return this;
         }
 
@@ -168,13 +183,15 @@ namespace MikroFramework.Pool
             return Create<SafeGameObjectPool>(pooledPrefab);
         }
 
-        protected void Init(GameObject pooledPrefab, int initCount=0, int maxCount=50) {
+        protected void Init(GameObject pooledPrefab, int initCount = 0, int maxCount = 50)
+        {
             cachedStack.Clear();
             destroyedObjectInQueue.Clear();
             numHiddenObjectCreating = 0;
 
 
-            if (pooledPrefab.GetComponent<PoolableGameObject>() == null) {
+            if (pooledPrefab.GetComponent<PoolableGameObject>() == null)
+            {
                 Debug.LogError("Pooled Prefab must have a component that inherited from PoolableGameObject!");
             }
 
@@ -197,28 +214,34 @@ namespace MikroFramework.Pool
 
             this.maxCount = maxCount;
 
-            if (CurrentCount < initCount) {
+            if (CurrentCount < initCount)
+            {
                 numHiddenObjectCreating += initCount - CurrentCount;
                 poolState = GameObjectPoolState.Initializing;
                 creatingObjs.Value = true;
             }
-            else {
+            else
+            {
                 poolState = GameObjectPoolState.Inited;
             }
-           
+
 
         }
 
 
-        private BindableProperty<bool> creatingObjs = new BindableProperty<bool>() {Value = false};
-        private BindableProperty<bool> destroyingObjs = new BindableProperty<bool>(){Value = false};
+        private BindableProperty<bool> creatingObjs = new BindableProperty<bool>() { Value = false };
+        private BindableProperty<bool> destroyingObjs = new BindableProperty<bool>() { Value = false };
 
-       
-        IEnumerator DestoryObjectsInQueue() {
-            while (destroyedObjectInQueue.Count>0) {
-                for (int i = 0; i < NumObjDestroyPerFrame; i++) {
-                    if (destroyedObjectInQueue.Count > 0) {
-                        GameObject obj= destroyedObjectInQueue.Dequeue().gameObject;
+
+        IEnumerator DestoryObjectsInQueue()
+        {
+            while (destroyedObjectInQueue.Count > 0)
+            {
+                for (int i = 0; i < NumObjDestroyPerFrame; i++)
+                {
+                    if (destroyedObjectInQueue.Count > 0)
+                    {
+                        GameObject obj = destroyedObjectInQueue.Dequeue().gameObject;
                         Destroy(obj);
                     }
                 }
@@ -229,11 +252,14 @@ namespace MikroFramework.Pool
             destroyingObjs.Value = false;
         }
 
-        IEnumerator InitializeObjectsToGame() {
-            while (numHiddenObjectCreating > 0) {
+        IEnumerator InitializeObjectsToGame()
+        {
+            while (numHiddenObjectCreating > 0)
+            {
                 for (int i = 0; i < NumObjInitPerFrame; i++)
                 {
-                    if (numHiddenObjectCreating > 0) {
+                    if (numHiddenObjectCreating > 0)
+                    {
                         GameObject createdObject = base.Allocate();
                         createdObject.SetActive(false);
                         createdObject.transform.SetParent(this.transform);
@@ -249,8 +275,10 @@ namespace MikroFramework.Pool
             poolState = GameObjectPoolState.Inited;
         }
 
-        private void CheckInited() {
-            if (poolState==GameObjectPoolState.NotInited) {
+        private void CheckInited()
+        {
+            if (poolState == GameObjectPoolState.NotInited)
+            {
                 Debug.LogError("The SafeGameObject Pool hasn't been inited yet. Use Init() before" +
                                "calling any functions");
             }

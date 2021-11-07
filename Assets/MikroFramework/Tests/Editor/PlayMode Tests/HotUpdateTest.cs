@@ -58,7 +58,7 @@ namespace MikroFramework.Test {
         {
             HotUpdateManager.Singleton.GetRemoteResVersion(version => {
                 Debug.Log(version.Version);
-                Assert.IsTrue(version.Version == "0.0.1");
+                Assert.NotNull(version);
             }, error => {
                 Debug.Log(error.ToString());
             });

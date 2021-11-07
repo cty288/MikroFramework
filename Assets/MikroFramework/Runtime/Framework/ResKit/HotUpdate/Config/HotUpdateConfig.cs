@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using MikroFramework.ResKit;
+using MikroFramework.Serializer;
 using MikroFramework.Utilities;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -15,7 +16,7 @@ namespace MikroFramework.ResKit
         /// Path that hot update asset bundles are saved
         /// </summary>
         public static string HotUpdateAssetBundlesFolder {
-            get { return Application.persistentDataPath + "/AssetBundles/"; }
+            get { return PlayerPrefs.GetString("HotupdateFolder", Application.persistentDataPath + "/AssetBundles/"); }
         }
 
         /// <summary>
@@ -40,7 +41,7 @@ namespace MikroFramework.ResKit
         /// </summary>
         public static string RemoteResVersionURL {
             get {
-                return Application.dataPath + "/MikroFramework/Framework/ResKit/HotUpdate/Remote/" +
+                return Application.dataPath + "/MikroFramework/Runtime/Framework/ResKit/HotUpdate/Remote/" +
                        ResKitUtility.CurrentPlatformName + "/ResVersion.json";
             }
         }
@@ -55,12 +56,16 @@ namespace MikroFramework.ResKit
             }
         }
 
-        public static string AssetBundleResVersionBuildPath {
+#if UNITY_EDITOR
+        public static string AssetBundleAssetDataBuildPath
+        {
             get {
-                return Application.dataPath + "/AssetBundleBuilds/" + Application.version + "/" +
-                       ResKitUtility.CurrentPlatformName + "/";
+                return UnityEditor.EditorPrefs.GetString("ABDataPath", Application.dataPath + "/AssetBundleBuilds/")
+                    +Application.version+"/"+ResKitUtility.CurrentPlatformName+"/";
             }
         }
+#endif
+
 
 
         /// <summary>
@@ -76,7 +81,7 @@ namespace MikroFramework.ResKit
             }
 
             string persistResVersionJson = File.ReadAllText(hotUpdateResVersionFilePath);
-            ResVersion persistResVersion = JsonUtility.FromJson<ResVersion>(persistResVersionJson);
+            ResVersion persistResVersion = AdvancedJsonSerializer.Singleton.Deserialize<ResVersion>(persistResVersionJson);
 
             return persistResVersion;
 

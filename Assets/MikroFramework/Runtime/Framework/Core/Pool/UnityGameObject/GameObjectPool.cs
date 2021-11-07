@@ -22,7 +22,7 @@ namespace MikroFramework.Pool
         protected Stack<GameObject> cachedStack = new Stack<GameObject>();
         protected IObjectFactory<GameObject> prefabFactory;
 
-        [SerializeField] 
+        [SerializeField]
         protected GameObject pooledPrefab;
         public GameObject PooledPrefab => pooledPrefab;
 
@@ -32,7 +32,8 @@ namespace MikroFramework.Pool
         /// <typeparam name="T"></typeparam>
         /// <param name="pooledPrefab"></param>
         /// <returns></returns>
-        public static T Create<T>(GameObject pooledPrefab) where T:GameObjectPool{
+        public static T Create<T>(GameObject pooledPrefab) where T : GameObjectPool
+        {
             T pool = new GameObject().AddComponent<T>();
             pool.Init(pooledPrefab);
             return pool;
@@ -43,18 +44,22 @@ namespace MikroFramework.Pool
         /// </summary>
         /// <param name="pooledPrefab"></param>
         /// <returns></returns>
-        public static SafeGameObjectPool Create(GameObject pooledPrefab) {
+        public static SafeGameObjectPool Create(GameObject pooledPrefab)
+        {
             return Create<SafeGameObjectPool>(pooledPrefab);
         }
 
-        public int CurrentCount {
+        public int CurrentCount
+        {
             get { return cachedStack.Count; }
         }
 
-        public virtual GameObject Allocate() {
-            if (pooledPrefab != null) {
+        public virtual GameObject Allocate()
+        {
+            if (pooledPrefab != null)
+            {
                 GameObject allocatedObj;
-                if (poolState == GameObjectPoolState.NotInited || poolState==GameObjectPoolState.Initializing)
+                if (poolState == GameObjectPoolState.NotInited || poolState == GameObjectPoolState.Initializing)
                 {
                     allocatedObj = prefabFactory.Create();
                 }

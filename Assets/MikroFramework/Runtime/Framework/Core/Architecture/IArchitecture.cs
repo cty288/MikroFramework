@@ -16,14 +16,14 @@ namespace MikroFramework.Architecture
         T GetUtility<T>() where T : class, IUtility;
 
         /// <summary>
-        /// Register a model to the architecture
+        /// RegisterInstance a model to the architecture
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="instance"></param>
         void RegisterModel<T>(T instance) where T : IModel;
 
         /// <summary>
-        /// Register an IUtility to the architecture
+        /// RegisterInstance an IUtility to the architecture
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="instance"></param>
@@ -31,14 +31,14 @@ namespace MikroFramework.Architecture
 
 
         /// <summary>
-        /// Register an ISystem to the architecture
+        /// RegisterInstance an ISystem to the architecture
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="system"></param>
         void RegisterSystem<T>(T system) where T:ISystem;
 
         /// <summary>
-        /// Register an IModel to the architecture
+        /// RegisterInstance an IModel to the architecture
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
@@ -48,14 +48,14 @@ namespace MikroFramework.Architecture
         /// Send a ICommand
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        void SendCommand<T>() where T : ICommand, new();
+        void SendCommand<T>() where T : class, ICommand, new();
 
         /// <summary>
         /// Send a ICommand object
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="command"></param>
-        void SendCommand<T>(T command) where T : ICommand;
+        void SendCommand<T>(T command) where T : class, ICommand;
 
         /// <summary>
         /// Get an ISystem that registered to the archiecture
@@ -78,7 +78,7 @@ namespace MikroFramework.Architecture
         void SendEvent<T>(T e);
 
         /// <summary>
-        /// Register a listener to a Type event
+        /// RegisterInstance a listener to a Type event
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="onEvent"></param>
@@ -91,6 +91,9 @@ namespace MikroFramework.Architecture
         /// <typeparam name="T"></typeparam>
         /// <param name="onEvent"></param>
         void UnRegisterEvent<T>(Action<T> onEvent);
+
+
+        TResult SendQuery<TResult>(IQuery<TResult> query);
 
     }
 }

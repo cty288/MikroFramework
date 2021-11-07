@@ -37,6 +37,11 @@ namespace MikroFramework.Test
             // Use yield to skip a frame.
             yield return null;
         }
+
+        [Test]
+        public void TypeName() {
+           
+        }
     }
 
 }

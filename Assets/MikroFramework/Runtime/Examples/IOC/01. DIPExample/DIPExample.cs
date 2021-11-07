@@ -36,16 +36,16 @@ namespace MikroFramework.Examples
 
        private void Start() {
            IOCContainer container = new IOCContainer();
-           container.Register<IStorage>(new PlayPrefStorage());
+           container.RegisterInstance<IStorage>(new PlayPrefStorage());
 
-           IStorage storage = container.Get<IStorage>();
+           IStorage storage = container.GetInstance<IStorage>();
            storage.SaveString("name","runtime");
 
            Debug.Log(storage.LoadString("name"));
 
 
-           container.Register<IStorage>(new EditorPrefStorage());
-           storage = container.Get<IStorage>();
+           container.RegisterInstance<IStorage>(new EditorPrefStorage());
+           storage = container.GetInstance<IStorage>();
            Debug.Log(storage.LoadString("name"));
        }
     }

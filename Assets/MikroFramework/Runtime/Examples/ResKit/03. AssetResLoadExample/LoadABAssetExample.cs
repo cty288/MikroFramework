@@ -20,11 +20,15 @@ namespace MikroFramework
         private ResLoader resLoader;
 
         void Start() {
-            resLoader = new ResLoader();
+            ResLoader.Create((loader) => {
+                resLoader = loader;
 
-            var texture= resLoader.LoadSync<Texture2D>("mftest", "Asteroid_1");
+                var texture = resLoader.LoadSync<Texture2D>("mftest", "Asteroid_1");
 
-            Debug.Log(texture.name);
+                Debug.Log(texture.name);
+            });
+
+            
 
             //resLoader.LoadAsync<GameObject>("mftest","TestABObj",
                 //prefab => {

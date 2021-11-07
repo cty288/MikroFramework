@@ -1,9 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using MikroFramework.Utilities;
+using UnityEditor;
 using UnityEngine;
 
 namespace MikroFramework.EditorModulization {
-    public class ModulePlatformReadme : IEditorPlatformModule {
+    public class ModulePlatformReadme :EditorWindow, IEditorPlatformModule {
+        public EditorPlatformElement ElementInfo { get; } =
+            new EditorPlatformElement(0, "Editor Modulization - Instructions");
+
         public void OnGUI() {
             GUILayout.Label("Editor Modulization - Instructions", new GUIStyle() {
                 fontSize = 20,
@@ -18,6 +23,7 @@ namespace MikroFramework.EditorModulization {
             GUILayout.Label("    }");
             GUILayout.Label("}");
 
+          
         }
     }
 

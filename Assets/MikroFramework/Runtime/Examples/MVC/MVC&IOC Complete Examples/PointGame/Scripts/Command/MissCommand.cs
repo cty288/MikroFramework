@@ -7,9 +7,9 @@ using MikroFramework.Architecture;
 
 namespace MikroFramework.Examples
 {
-    public class MissCommand:AbstractCommand
+    public class MissCommand:AbstractCommand<MissCommand>
     {
-        protected override void OnExecute(params object[] parameters) {
+        protected override void OnExecute() {
             IGameModel gameModel = this.GetModel<IGameModel>();
 
             if (gameModel.Life.Value > 0) {

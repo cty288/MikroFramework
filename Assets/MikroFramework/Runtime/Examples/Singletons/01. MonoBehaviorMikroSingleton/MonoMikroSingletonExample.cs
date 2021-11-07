@@ -21,6 +21,7 @@ namespace MikroFramework.Examples
         //[RuntimeInitializeOnLoadMethod]
         private static void Example() {
             var initInstance= MonoMikroSingletonExample.Singleton;
+
             initInstance = MonoMikroSingletonExample.Singleton;
         }
 

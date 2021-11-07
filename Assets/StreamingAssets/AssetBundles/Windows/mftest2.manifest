@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 1213233544
+CRC: 3994843792
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 9e7a353d10115dd2b8176bbfef80d115
+    Hash: 814fb215de8d0fd43ab3cc4d527029fc
   TypeTreeHash:
     serializedVersion: 2
-    Hash: c5c62297f918cbde3d304172cfcc3a61
+    Hash: ba4cf49e2ff52c30255f3f86c69c5f32
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -17,12 +17,18 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 48
   Script: {instanceID: 0}
+- Class: 82
+  Script: {instanceID: 0}
+- Class: 83
+  Script: {instanceID: 0}
 - Class: 212
   Script: {instanceID: 0}
 - Class: 213
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
-- Assets/MikroFramework/Examples/ResKit/04. HotUpdateExample/TestABObj.prefab
+- Assets/MikroFramework/Runtime/Examples/ResKit/04. HotUpdateExample/TestABObj.prefab
+- Assets/MikroFramework/Runtime/Examples/AudioKit/01. BasicExample/Resources/War
+  loop.prefab
 Dependencies:
 - D:/programming/unity/projects/MikroFramework/Assets/StreamingAssets/AssetBundles/Windows/mftest

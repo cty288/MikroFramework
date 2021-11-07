@@ -6,9 +6,9 @@ using UnityEngine;
 
 namespace MikroFramework.Examples
 {
-    public class KillEnemyCommand : AbstractCommand {
+    public class KillEnemyCommand : AbstractCommand<KillEnemyCommand> {
 
-        protected override void OnExecute(params object[] parameters) {
+        protected override void OnExecute() {
            this.GetModel<IGameModel>().KillCount.Value++;
 
            if (Random.Range(0, 10) < 3) {

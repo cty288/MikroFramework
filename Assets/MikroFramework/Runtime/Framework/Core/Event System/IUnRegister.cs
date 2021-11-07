@@ -7,7 +7,7 @@ using MikroFramework.Pool;
 
 namespace MikroFramework.Event
 {
-    public interface IUnRegister:IPoolable
+    public interface IUnRegister
     {
         void UnRegister();
     }

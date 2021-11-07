@@ -24,7 +24,7 @@ namespace MikroFramework.Event
 
         
         /// <summary>
-        /// Register a global event
+        /// RegisterInstance a global event
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="onEvent">callback function</param>
@@ -84,7 +84,7 @@ namespace MikroFramework.Event
         }
 
         /// <summary>
-        /// Register a local event. Use static functions (global events) if you are not using an architecture.
+        /// RegisterInstance a local event. Use static functions (global events) if you are not using an architecture.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="onEvent"></param>
@@ -105,7 +105,7 @@ namespace MikroFramework.Event
             (registerations as Registerations<T>).OnEvent += onEvent;
 
 
-            return TypeEventSystemUnRegister<T>.Allocate(this, onEvent);
+            return new TypeEventSystemUnRegister<T>(this, onEvent);
               
         }
 

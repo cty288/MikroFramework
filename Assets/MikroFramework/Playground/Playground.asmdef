@@ -2,12 +2,11 @@
     "name": "Playground",
     "rootNamespace": "MikroFramework.Playground",
     "references": [
-        "GUID:f2b0d54d51e30694d86d80d43c7d5c90",
-        ""
+        "GUID:f2b0d54d51e30694d86d80d43c7d5c90"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
-    "allowUnsafeCode": true,
+    "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,

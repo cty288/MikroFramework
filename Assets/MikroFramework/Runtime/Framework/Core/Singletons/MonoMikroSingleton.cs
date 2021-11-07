@@ -23,10 +23,6 @@ namespace MikroFramework.Singletons {
                 return instance;
             }
         }
-
-
-
-
         
     }
 

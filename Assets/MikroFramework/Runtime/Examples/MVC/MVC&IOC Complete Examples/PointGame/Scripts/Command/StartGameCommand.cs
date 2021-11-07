@@ -6,9 +6,9 @@ using UnityEngine;
 
 namespace MikroFramework
 {
-    public class StartGameCommand : AbstractCommand {
+    public class StartGameCommand : AbstractCommand<StartGameCommand> {
 
-        protected override void OnExecute(params object[] parameters) {
+        protected override void OnExecute() {
             IGameModel gameModel = new GameModel();
             gameModel.KillCount.Value = 0;
             gameModel.BestScore.Value = 0;

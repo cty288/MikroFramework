@@ -27,7 +27,7 @@ namespace MikroFramework.Event {
                 eventTable[eventType] = eventTable[eventType] + callBack;
             }
 
-            return EnumEventSystemUnRegister.Allocate(eventType, callBack);
+            return new EnumEventSystemUnRegister(eventType, callBack);
 
         }
 
@@ -137,4 +137,10 @@ namespace MikroFramework.Event {
     }
 
 }
+
+
+
+
+
+
 

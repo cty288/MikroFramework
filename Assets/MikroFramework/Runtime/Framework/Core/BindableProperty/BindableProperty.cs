@@ -3,12 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using MikroFramework.Event;
 using MikroFramework.Managers;
+using MikroFramework.Pool;
 using UnityEngine;
 
 namespace MikroFramework.BindableProperty
 {
     [Serializable]
-    public class BindableProperty<T> where T:IEquatable<T> {
+    public class BindableProperty<T> {
+
         
         private T value = default(T);
 
@@ -29,10 +31,11 @@ namespace MikroFramework.BindableProperty
             }
         }
         
+        
         private Action<T> onValueChanged = (v) => { };
 
         /// <summary>
-        /// Register listeners to the event that triggered when the value of the property changes.
+        /// RegisterInstance listeners to the event that triggered when the value of the property changes.
         /// </summary>
         /// <param name="onValueChanged"></param>
         /// <returns>The returned IUnRegister allows you to call its UnRegisterWhenGameObjectDestroyed()
@@ -40,7 +43,7 @@ namespace MikroFramework.BindableProperty
         public IUnRegister RegisterOnValueChaned(Action<T> onValueChanged) {
             this.onValueChanged += onValueChanged;
 
-            return BindablePropertyUnRegister<T>.Allocate(this,onValueChanged);
+            return new BindablePropertyUnRegister<T>(this,onValueChanged);
                
         }
 

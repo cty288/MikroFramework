@@ -4,9 +4,7 @@ using UnityEngine;
 
 namespace MikroFramework.Architecture
 {
-    public interface ICanGetModel : IBelongToArchitecture
-    {
-
+    public interface ICanGetModel : IBelongToArchitecture {
     }
 
     public static class CanGetModelExtension

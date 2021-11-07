@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using MikroFramework.Pool;
 using MikroFramework.ResKit;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace MikroFramework.ResKit
 {
@@ -21,12 +23,21 @@ namespace MikroFramework.ResKit
         /// <param name="assetName"></param>
         /// <param name="ownerBundleName"></param>
         /// <returns></returns>
-        public static AssetRes Allocate(string assetName, string ownerBundleName) {
+        public static AssetRes Allocate(string assetName, string ownerBundleName, Type resType) {
             AssetRes res = SafeObjectPool<AssetRes>.Singleton.Allocate();
 
             res.nameInAB = assetName;
-            res.Name = ownerBundleName + "/" + assetName;
 
+            if (String.IsNullOrEmpty(ownerBundleName)) {
+                ResSearchKeys resSearchKeys = ResSearchKeys.Allocate(assetName,resType);
+                ownerBundleName = ResData.Singleton.GetAssetData(resSearchKeys)
+                    .OwnerBundleName;
+
+                resSearchKeys.RecycleToCache();
+            }
+            
+            res.Name = ownerBundleName + "/" + assetName;
+            res.ResType = resType;
             res.ownerBundleName = ownerBundleName;
             res.State = ResState.Waiting;
             return res;
@@ -58,10 +69,14 @@ namespace MikroFramework.ResKit
 
         }
 
+        public override bool MatchResSearchKeysWithoutName(ResSearchKeys resSearchKeys) {
+            return resSearchKeys.OwnerBundleName == ownerBundleName && resSearchKeys.ResType == ResType;
+        }
+
         public override bool LoadSync()
         {
             State = ResState.Loading;
-            AssetBundle ownerBundle = resLoader.LoadSync<AssetBundle>(ownerBundleName);
+            AssetBundle ownerBundle = resLoader.LoadSync<AssetBundle>(this.ownerBundleName);
 
             if (ResManager.IsSimulationModeLogic) {
 #if UNITY_EDITOR
@@ -93,7 +108,6 @@ namespace MikroFramework.ResKit
             Asset = null;
             resLoader.ReleaseAllAssets();
             resLoader = null;
-            ResManager.RemoveSharedRes(this);
         }
 
         public override void RecycleToCache() {

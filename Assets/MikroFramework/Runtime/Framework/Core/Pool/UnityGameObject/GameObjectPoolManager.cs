@@ -11,10 +11,12 @@ using UnityEngine;
 namespace MikroFramework
 {
     public class GameObjectPoolManager : MonoMikroSingleton<GameObjectPoolManager>,
-        IGameObjectPoolManager<SafeGameObjectPool> {
+        IGameObjectPoolManager<SafeGameObjectPool>
+    {
 
         private Dictionary<string, SafeGameObjectPool> pools;
-        public Dictionary<string, SafeGameObjectPool> GameObjectPools {
+        public Dictionary<string, SafeGameObjectPool> GameObjectPools
+        {
             get { return pools; }
         }
 
@@ -33,29 +35,36 @@ namespace MikroFramework
         /// </summary>
         public static bool AutoCreatePoolWhenAllocating = false;
 
-        private void Awake() {
+        private void Awake()
+        {
             pools = new Dictionary<string, SafeGameObjectPool>();
             resLoader = new ResLoader();
         }
 
-        public SafeGameObjectPool GetOrCreatePool(GameObject prefab) {
+        public SafeGameObjectPool GetOrCreatePool(GameObject prefab)
+        {
             return CreatePool(prefab, 10, 50);
         }
 
         public SafeGameObjectPool GetOrCreatePoolFromAB(string prefabAssetName, string ownerBundleName,
-            out GameObject prefab) {
+            out GameObject prefab)
+        {
             return CreatePoolFromAB(prefabAssetName, ownerBundleName, 10, 50, out prefab);
         }
 
-        public SafeGameObjectPool CreatePool(GameObject prefab, int initialCount, int maxCount) {
+        public SafeGameObjectPool CreatePool(GameObject prefab, int initialCount, int maxCount)
+        {
             string prefabName = prefab.name;
 
-            if (pools.ContainsKey(prefabName)) {
-                return pools[prefabName];
+            if (CheckPoolExists(prefab,out SafeGameObjectPool existingPool))
+            {
+                return existingPool;
             }
 
-            if (AutoAddDefaultPoolableGameObject) {
-                if (prefab.GetComponent<PoolableGameObject>() == null) {
+            if (AutoAddDefaultPoolableGameObject)
+            {
+                if (prefab.GetComponent<PoolableGameObject>() == null)
+                {
                     prefab.AddComponent<DefaultPoolableGameObject>();
                 }
             }
@@ -66,21 +75,45 @@ namespace MikroFramework
         }
 
         public SafeGameObjectPool CreatePoolFromAB(string prefabAssetName, string ownerBundleName,
-            int initialCount, int maxCount, out GameObject prefab) {
+            int initialCount, int maxCount, out GameObject prefab)
+        {
             prefab = resLoader.LoadSync<GameObject>(ownerBundleName, prefabAssetName);
             return CreatePool(prefab, initialCount, maxCount);
         }
 
+        private bool CheckPoolExists(GameObject prefab, out SafeGameObjectPool pool) {
+            string prefabName = prefab.name;
+            if (!pools.ContainsKey(prefabName)) {
+                SafeGameObjectPool existingPool = GameObject.Find($"Object Pool: {prefabName}").GetComponent<SafeGameObjectPool>();
+                if (existingPool) {
+                    pools.Add(prefabName,existingPool);
+                    pool = existingPool;
+                    return true;
+                }
 
-        public GameObject Allocate(GameObject prefab) {
+                pool = null;
+                return false;
+            }
+
+            pool = pools[prefabName];
+            return true;
+        }
+
+
+        public GameObject Allocate(GameObject prefab)
+        {
             if (prefab) {
+                SafeGameObjectPool pool;
                 string prefabName = prefab.name;
 
-                if (!pools.ContainsKey(prefabName)) {
-                    if (AutoCreatePoolWhenAllocating) {
+                if (!CheckPoolExists(prefab,out pool))
+                {
+                    if (AutoCreatePoolWhenAllocating)
+                    {
                         GetOrCreatePool(prefab);
                     }
-                    else {
+                    else
+                    {
                         Debug.LogError(
                             $"The pool does not exist for {prefabName}! Use CreatePool() to create its pool!");
                         return null;
@@ -88,7 +121,7 @@ namespace MikroFramework
                 }
 
 
-                return pools[prefabName].Allocate();
+                return pool.Allocate();
 
             }
 
@@ -98,26 +131,34 @@ namespace MikroFramework
 
 
 
-        public bool Recycle(GameObject recycledObject) {
-            if (recycledObject) {
+        public bool Recycle(GameObject recycledObject)
+        {
+            if (recycledObject)
+            {
                 string prefabName = CommonUtility.DeleteCloneName(recycledObject);
                 recycledObject.name = prefabName;
+                SafeGameObjectPool pool;
 
-                if (!pools.ContainsKey(prefabName)) {
+                if (!CheckPoolExists(recycledObject,out pool))
+                {
                     Debug.LogError($"The pool does not exist for {prefabName}! Use CreatePool() to create its pool!");
                     return false;
                 }
-                else {
-                    return pools[prefabName].Recycle(recycledObject);
+                else
+                {
+                    return pool.Recycle(recycledObject);
                 }
             }
 
             return false;
         }
 
-        public bool AddNewPool(SafeGameObjectPool newPool) {
-            if (newPool != null && newPool.PooledPrefab) {
-                if (!pools.ContainsKey(newPool.PooledPrefab.name)) {
+        public bool AddNewPool(SafeGameObjectPool newPool)
+        {
+            if (newPool != null && newPool.PooledPrefab)
+            {
+                if (!CheckPoolExists(newPool.PooledPrefab,out SafeGameObjectPool pool))
+                {
                     pools.Add(newPool.PooledPrefab.name, newPool);
                     return true;
                 }
@@ -126,7 +167,8 @@ namespace MikroFramework
             return false;
         }
 
-        protected override void OnBeforeDestroy() {
+        protected override void OnBeforeDestroy()
+        {
             base.OnBeforeDestroy();
             resLoader.ReleaseAllAssets();
         }

@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using GitHub.Unity;
 using MikroFramework.Examples;
 using MikroFramework.ServiceLocator;
 using UnityEngine;

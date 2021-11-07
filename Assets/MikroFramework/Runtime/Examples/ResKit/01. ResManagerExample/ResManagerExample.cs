@@ -19,11 +19,18 @@ namespace MikroFramework.Examples
 #endif
         private ResLoader resLoader;
 
-        IEnumerator Start() {
-            resLoader = new ResLoader();
+        void Start() {
+            ResLoader.Create((loader) => {
+                resLoader = loader;
+                StartCoroutine(Load());
+            });
+            
+        }
+
+        IEnumerator Load() {
             yield return new WaitForSeconds(2.0f);
             resLoader.LoadAsync<AudioClip>("resources://War loop", clip => {
-                Debug.Log("Async loaded: "+clip.name);
+                Debug.Log("Async loaded: " + clip.name);
                 Debug.Log(Time.time);
             });
             Debug.Log(Time.time);
@@ -36,6 +43,7 @@ namespace MikroFramework.Examples
             yield return new WaitForSeconds(2.0f);
             resLoader.ReleaseAllAssets();
         }
+
 
 
 

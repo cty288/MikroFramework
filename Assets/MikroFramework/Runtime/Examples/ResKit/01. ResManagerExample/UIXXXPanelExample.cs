@@ -21,9 +21,12 @@ namespace MikroFramework.Examples
 
         // Start is called before the first frame update
         void Start() {
-            resLoader = new ResLoader();
-            resLoader.LoadSync<AudioClip>("resources://War loop");
-            resLoader.LoadSync<AudioClip>("resources://Lose");
+            ResLoader.Create(loader => {
+                resLoader = loader;
+                resLoader.LoadSync<AudioClip>("resources://War loop");
+                resLoader.LoadSync<AudioClip>("resources://Lose");
+            });
+      
         }
 
         void OtherFunction() {
@@ -45,9 +48,11 @@ namespace MikroFramework.Examples
         private ResLoader resLoader;
         // Start is called before the first frame update
         void Start() {
-            resLoader = new ResLoader();
-            resLoader.LoadSync<AudioClip>("resources://War loop");
-            resLoader.LoadSync<AudioClip>("resources://Lose");
+            ResLoader.Create(loader => {
+                resLoader = loader;
+                resLoader.LoadSync<AudioClip>("resources://War loop");
+                resLoader.LoadSync<AudioClip>("resources://Lose");
+            });
         }
 
         void OtherFunction()

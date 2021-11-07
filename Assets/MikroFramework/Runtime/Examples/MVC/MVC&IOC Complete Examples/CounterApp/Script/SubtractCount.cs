@@ -5,10 +5,10 @@ using MikroFramework.Architecture;
 using UnityEngine;
 
 namespace MikroFramework.Examples.CounterApp {
-    public class SubtractCount : AbstractCommand
+    public class SubtractCount : AbstractCommand<SubtractCount>
     {
 
-        protected override void OnExecute(params object[] parameters)
+        protected override void OnExecute()
         {
             this.GetModel<ICounterModel>().Count.Value--;
         }

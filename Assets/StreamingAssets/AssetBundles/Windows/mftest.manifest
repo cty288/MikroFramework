@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1341393068
+CRC: 2845960837
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: cd4c47770342fa010a97286dcb584876
+    Hash: 031177f267109ecf31fc9497600059d3
   TypeTreeHash:
     serializedVersion: 2
     Hash: 9a2f4c88a41f1c900bb6827eda5a99f7
@@ -35,8 +35,9 @@ ClassTypes:
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
-- Assets/MikroFramework/Examples/Managers/03. AudioManager/Resources/War loop.wav
-- Assets/MikroFramework/Examples/ResKit/02. AssetBundleExample/folder/TestABObj.prefab
-- Assets/MikroFramework/Examples/ResKit/02. AssetBundleExample/folder/folder/Asteroid_1.png
-- Assets/MikroFramework/Examples/ResKit/02. AssetBundleExample/folder/folder/Cylinder.prefab
+- Assets/MikroFramework/Runtime/Examples/AudioKit/01. BasicExample/Resources/War
+  loop.wav
+- Assets/MikroFramework/Runtime/Examples/ResKit/02. AssetBundleExample/folder/TestABObj.prefab
+- Assets/MikroFramework/Runtime/Examples/ResKit/02. AssetBundleExample/folder/folder/Asteroid_1.png
+- Assets/MikroFramework/Runtime/Examples/ResKit/02. AssetBundleExample/folder/folder/Cylinder.prefab
 Dependencies: []

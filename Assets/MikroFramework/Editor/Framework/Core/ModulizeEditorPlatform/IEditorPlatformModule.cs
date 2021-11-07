@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace MikroFramework.EditorModulization
 {
-    public interface IEditorPlatformModule {
+    public interface IEditorPlatformModule { 
+        EditorPlatformElement ElementInfo { get; }
         void OnGUI();
     }
 }

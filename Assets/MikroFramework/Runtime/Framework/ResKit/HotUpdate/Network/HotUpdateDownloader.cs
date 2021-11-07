@@ -2,18 +2,24 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using MikroFramework.ResKit;
+using MikroFramework.Serializer;
 using MikroFramework.Utilities;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace MikroFramework.ResKit
 {
-    public static class HotUpdateDownloader
+    public class HotUpdateDownloader: MonoBehaviour, IHotUpdateDownloader
     {
-        public static List<ABMD5Base> totalDownloadingFiles = new List<ABMD5Base>();
-        public static List<ABMD5Base> filesAlreadyDownloaded = new List<ABMD5Base>();
-        public static UnityWebRequest downloadingFileRequest = null;
+        private List<ABMD5Base> totalDownloadingFiles = new List<ABMD5Base>();
+        private List<ABMD5Base> filesAlreadyDownloaded = new List<ABMD5Base>();
+        private UnityWebRequest downloadingFileRequest = null;
+
+        private bool showDownloadSpeedEnabled = false;
+        private float downloadSpeedUpdateTimeInterval = 1f;
+        private float downloadSpeed;
 
 
         /// <summary>
@@ -21,7 +27,7 @@ namespace MikroFramework.ResKit
         /// </summary>
         /// <param name="getResVersion"></param>
         /// <returns></returns>
-        public static IEnumerator GetLocalAssetResVersion(Action<ResVersion> getResVersion, Action<HotUpdateError>
+        public IEnumerator GetLocalAssetResVersion(Action<ResVersion> getResVersion, Action<HotUpdateError>
             onGetFailed)
         {
             string localResVersionPath = HotUpdateConfig.LocalResVersionFilePath;
@@ -39,7 +45,7 @@ namespace MikroFramework.ResKit
             else
             {
                 string jsonString = request.downloadHandler.text;
-                ResVersion resVersion = JsonUtility.FromJson<ResVersion>(jsonString);
+                ResVersion resVersion = AdvancedJsonSerializer.Singleton.Deserialize<ResVersion>(jsonString);
                 getResVersion.Invoke(resVersion);
             }
         }
@@ -49,7 +55,7 @@ namespace MikroFramework.ResKit
         /// </summary>
         /// <param name="onResDownloaded"></param>
         /// <returns></returns>
-        public static IEnumerator RequestGetRemoteResVersion(Action<ResVersion> onResDownloaded,
+        public IEnumerator RequestGetRemoteResVersion(Action<ResVersion> onResDownloaded,
             Action<HotUpdateError> onError)
         {
             string remoteResVersionPath =HotUpdateConfig.RemoteResVersionURL;
@@ -65,7 +71,7 @@ namespace MikroFramework.ResKit
             else
             {
                 string jsonString = request.downloadHandler.text;
-                ResVersion resVersion = JsonUtility.FromJson<ResVersion>(jsonString);
+                ResVersion resVersion = AdvancedJsonSerializer.Singleton.Deserialize<ResVersion>(jsonString);
                 onResDownloaded.Invoke(resVersion);
             }
         }
@@ -76,7 +82,7 @@ namespace MikroFramework.ResKit
         /// <param name="remoteResVersion"></param>
         /// <param name="onloadedDone"></param>
         /// <returns></returns>
-        public static void DoDownloadResVersion(ResVersion remoteResVersion)
+        public void DoDownloadResVersion(ResVersion remoteResVersion)
         {
             if (!Directory.Exists(ResKitUtility.TempAssetBundlesPath))
             {
@@ -84,7 +90,7 @@ namespace MikroFramework.ResKit
             }
 
             string tempResVersionFilePath = ResKitUtility.TempAssetBundlesPath + "ResVersion.json";
-            string tempResVersionJson = JsonUtility.ToJson(remoteResVersion, true);
+            string tempResVersionJson = AdvancedJsonSerializer.Singleton.Serialize(remoteResVersion);
             File.WriteAllText(tempResVersionFilePath, tempResVersionJson);
         }
 
@@ -95,7 +101,7 @@ namespace MikroFramework.ResKit
         /// <param name="downloadList"></param>
         /// <param name="onDownloadDone">Event triggered after download. If download failed, the bool parameter will be false</param>
         /// <returns></returns>
-        public static IEnumerator DoDownloadRemoteABs(List<ABMD5Base> downloadList,
+        public IEnumerator DoDownloadRemoteABs(List<ABMD5Base> downloadList,
             Action<List<ABMD5Base>> onDownloadDone, Action<HotUpdateError> onDownloadFailed)
         {
 
@@ -138,6 +144,78 @@ namespace MikroFramework.ResKit
             }
 
             onDownloadDone?.Invoke(downloadList);
+        }
+
+        public float GetDownloadProgress() {
+            if (filesAlreadyDownloaded.Count > 0)
+            {
+                float totalDownloadSize = GetTotalDownloadFileSize();
+                float alreadyDownloadedSize = GetAlreadyDownloadedFileSize();
+                float downloadingFileSize = GetDownloadingFileSize();
+
+                return (alreadyDownloadedSize + downloadingFileSize) / totalDownloadSize;
+            }
+
+            return 0;
+        }
+
+        public float GetTotalDownloadFileSize() {
+            if (totalDownloadingFiles.Count > 0)
+            {
+                return totalDownloadingFiles.Sum(x => x.FileSize);
+            }
+
+            return 0;
+        }
+
+        public float GetAlreadyDownloadedFileSize() {
+            if (filesAlreadyDownloaded.Count > 0)
+            {
+                return filesAlreadyDownloaded.Sum(x => x.FileSize);
+            }
+
+            return 0;
+        }
+
+        public float GetDownloadingFileSize() {
+            if (downloadingFileRequest != null)
+            {
+                return downloadingFileRequest.downloadedBytes / 1000.0f;
+            }
+
+            return 0;
+        }
+
+        public float GetDownloadSpeed() {
+            return downloadSpeed;
+        }
+
+        public void EnableUpdateDownloadSpeed(float updateInterval = 1) {
+            showDownloadSpeedEnabled = true;
+        }
+
+        public void DisableUpdateDownloadSpeed() {
+            showDownloadSpeedEnabled = false;
+        }
+
+        private void Start() {
+            StartCoroutine(UpdateDownloadSpeed());
+        }
+
+        private IEnumerator UpdateDownloadSpeed()
+        {
+            while (showDownloadSpeedEnabled && downloadSpeedUpdateTimeInterval > 0)
+            {
+                float prevDownloadProgress = GetAlreadyDownloadedFileSize() + GetDownloadingFileSize();
+
+                yield return new WaitForSeconds(downloadSpeedUpdateTimeInterval);
+
+                float currentDownloadProgress = GetAlreadyDownloadedFileSize() + GetDownloadingFileSize();
+
+                downloadSpeed = (currentDownloadProgress - prevDownloadProgress) / downloadSpeedUpdateTimeInterval;
+            }
+
+            downloadSpeed = -1;
         }
     }
 }

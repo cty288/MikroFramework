@@ -9,9 +9,9 @@ namespace MikroFramework.Examples
     public class IOCExample : MonoBehaviour {
         private void Start() {
             IOCContainer container = new IOCContainer();
-            container.Register<IBluetoothManager>(new BlueToothManager());
+            container.RegisterInstance<IBluetoothManager>(new BlueToothManager());
 
-            IBluetoothManager blueToothManager = container.Get<IBluetoothManager>();
+            IBluetoothManager blueToothManager = container.GetInstance<IBluetoothManager>();
 
             blueToothManager.Connect();
 

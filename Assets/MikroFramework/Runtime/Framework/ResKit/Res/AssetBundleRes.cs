@@ -31,7 +31,7 @@ namespace MikroFramework.ResKit
             AssetBundleRes res = SafeObjectPool<AssetBundleRes>.Singleton.Allocate();
 
             res.AssetPath= ResKitUtility.GetAssetBundlePath(assetName);
-            Debug.Log($"Got {assetName}'s path: {res.AssetPath}");
+            res.ResType = typeof(AssetBundle);
             res.Name = assetName;
             res.State = ResState.Waiting;
             return res;
@@ -61,11 +61,14 @@ namespace MikroFramework.ResKit
                 Debug.Log($"Loaded Dependency: {bundleName}");
             }
         }
+
+
+
         public override void LoadAsync() {
             State = ResState.Loading;
 
             if (ResManager.IsSimulationModeLogic) {
-                State= ResState.Loaded;
+                State = ResState.Loaded;
             }
             else {
                 LoadDependencyBundlesAsync(() => {
@@ -90,7 +93,6 @@ namespace MikroFramework.ResKit
             }
 
             if (!ResManager.IsSimulationModeLogic) {
-                Debug.Log(AssetPath);
                 AssetBundle = AssetBundle.LoadFromFile(AssetPath);
             }
 
@@ -110,7 +112,6 @@ namespace MikroFramework.ResKit
 
             
             AssetBundle = null;
-            ResManager.RemoveSharedRes(this);
         }
 
         public override void RecycleToCache() {

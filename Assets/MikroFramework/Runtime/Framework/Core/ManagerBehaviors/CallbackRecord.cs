@@ -12,8 +12,9 @@ namespace MikroFramework
     {
         public EventType EventType;
         public Action<MikroMessage> OnEventReceived;
-        public void OnRecycled()
-        {
+
+
+        void IPoolable.OnRecycled() {
             OnEventReceived = null;
         }
 

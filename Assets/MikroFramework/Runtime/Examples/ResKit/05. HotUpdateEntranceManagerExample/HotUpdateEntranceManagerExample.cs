@@ -38,11 +38,11 @@ namespace MikroFramework.Examples
         public Text downloadText;
         protected override void OnHotUpdateResourcesDownloading(float downloadProgress, float totalDownloadSize, float alreadyDownloadedFileSize,
             float downloadingFileDownloadedSize, float downloadSpeed) {
-            downloadText.text = $"Total downloaded progress: {HotUpdateManager.Singleton.GetDownloadProgress()}" +
-                                $"\n Total downloading size: {HotUpdateManager.Singleton.GetTotalDownloadFileSize()}" +
-                                $"\n Already downloaded size: {HotUpdateManager.Singleton.GetAlreadyDownloadedFileSize()}" +
-                                $"\n Downloading file size: {HotUpdateManager.Singleton.GetDownloadingFileSize()}" +
-                                $"\n Download speed (kb/s): {HotUpdateManager.Singleton.GetDownloadSpeed()}";
+            downloadText.text = $"Total downloaded progress: {HotUpdateManager.Singleton.Downloader.GetDownloadProgress()}" +
+                                $"\n Total downloading size: {HotUpdateManager.Singleton.Downloader.GetTotalDownloadFileSize()}" +
+                                $"\n Already downloaded size: {HotUpdateManager.Singleton.Downloader.GetAlreadyDownloadedFileSize()}" +
+                                $"\n Downloading file size: {HotUpdateManager.Singleton.Downloader.GetDownloadingFileSize()}" +
+                                $"\n Download speed (kb/s): {HotUpdateManager.Singleton.Downloader. GetDownloadSpeed()}";
         }
 
         protected override void OnHotUpdateResourceDownloadedAndUpdated() {

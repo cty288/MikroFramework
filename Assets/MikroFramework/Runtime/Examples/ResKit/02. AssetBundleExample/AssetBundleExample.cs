@@ -31,16 +31,19 @@ namespace MikroFramework.Examples
         private ResLoader resLoader;
 
         void Start() {
-            resLoader = new ResLoader();
-            HotUpdateManager.Singleton.ValidateHotUpdateState(() => {
-                bundle = resLoader.LoadSync<AssetBundle>("mftest");
+            HotUpdateManager.Singleton.Init(() => {
+                HotUpdateManager.Singleton.ValidateHotUpdateState(() => {
+                    resLoader = new ResLoader();
+                    bundle = resLoader.LoadSync<AssetBundle>("mftest");
 
-                GameObject gameObject = bundle.LoadAsset<GameObject>("TestABObj");
+                    GameObject gameObject = bundle.LoadAsset<GameObject>("TestABObj");
 
-                Instantiate(gameObject);
-            }, error => {
-                Debug.Log(error.ToString());
-            });
+                    Instantiate(gameObject);
+                }, error => {
+                    Debug.Log(error.ToString());
+                });
+            },null);
+            
 
             
         }

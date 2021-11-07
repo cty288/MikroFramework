@@ -33,12 +33,18 @@ namespace MikroFramework.ResKit
         /// </summary>
         Overridden,
     }
-    public class HotUpdateManager : ManagerBehavior, ISingleton{
+
+    [MonoSingletonPath("[FrameworkPersistent]/[ResKit]/HotUpdate/HotUpdateManager")]
+    public class HotUpdateManager : ManagerBehavior, IHotUpdateManager{
         private HotUpdateState state;
-        private bool showDownloadSpeedEnabled = false;
-        private float downloadSpeedUpdateTimeInterval = 1f;
-        private float downloadSpeed;
+       
         private static HotUpdateManager instance;
+        private IHotUpdateDownloader downloader;
+
+        /// <summary>
+        /// The downloader of the current hot-update manager
+        /// </summary>
+        public IHotUpdateDownloader Downloader => downloader;
 
         public static HotUpdateManager Singleton {
             get {
@@ -62,6 +68,8 @@ namespace MikroFramework.ResKit
 
         void ISingleton.OnSingletonInit() {
             DontDestroyOnLoad(this.gameObject);
+
+            downloader = this.gameObject.AddComponent<HotUpdateDownloader>();
         }
 
         /// <summary>
@@ -69,7 +77,7 @@ namespace MikroFramework.ResKit
         /// </summary>
         public void Init(Action onInitFinished, Action<HotUpdateError> onInitFailed) {
             ValidateHotUpdateState(() => {
-                ResData.Singleton.Init(error => {
+                ResData.Singleton.Init(null,error => {
                     onInitFailed.Invoke(error);
                 });
 
@@ -106,15 +114,15 @@ namespace MikroFramework.ResKit
                 onCheckFinished.Invoke();
             }else {
                 //can read/write
-                StartCoroutine(HotUpdateDownloader.GetLocalAssetResVersion(localResVersion => {
-                    if (CommonUtility.CompareVersions(hotUpdateResVersion.Version,localResVersion.Version)) {
+                StartCoroutine(downloader.GetLocalAssetResVersion(localResVersion => {
+                    if (CommonUtility.AreVersionsEqual(hotUpdateResVersion.Version, localResVersion.Version)) {
                         state = HotUpdateState.Updated;
-                        
-                    }
-                    else {
+                    }else if (CommonUtility.CompareVersions(hotUpdateResVersion.Version, localResVersion.Version)) {
+                        state = HotUpdateState.Updated;
+                    }else if (CommonUtility.CompareVersions(localResVersion.Version, hotUpdateResVersion.Version)) {
                         state = HotUpdateState.Overridden;
-                        
                     }
+
                     
                     onCheckFinished.Invoke();
                 }, error => {
@@ -132,7 +140,7 @@ namespace MikroFramework.ResKit
         /// <param name="getNativeResVersion"></param>
         public void GetNativeResVersion(Action<ResVersion> getNativeResVersion,Action<HotUpdateError> onError) {
             if (state == HotUpdateState.NeverUpdated || state==HotUpdateState.Overridden) {
-                StartCoroutine(HotUpdateDownloader.GetLocalAssetResVersion(version => {
+                StartCoroutine(downloader.GetLocalAssetResVersion(version => {
                     getNativeResVersion.Invoke(version);
                 }, error => {
                     onError.Invoke(error);
@@ -175,7 +183,7 @@ namespace MikroFramework.ResKit
         public void GetRemoteResVersion(Action<ResVersion> onRemoteResVersionGet, Action<HotUpdateError> onError)
         {
             //Debug.Log($"Getting remote res version...");
-            StartCoroutine(HotUpdateDownloader.RequestGetRemoteResVersion(resVersion => {
+            StartCoroutine(downloader.RequestGetRemoteResVersion(resVersion => {
                 onRemoteResVersionGet(resVersion);
             }, error => {
                 onError.Invoke(error);
@@ -216,7 +224,10 @@ namespace MikroFramework.ResKit
                 }
 
                 if (needUpdateABs.Count > 0) {
-                    StartCoroutine(HotUpdateDownloader.DoDownloadRemoteABs(needUpdateABs, (results) => {
+                   
+                    StartCoroutine(downloader.DoDownloadRemoteABs(needUpdateABs, (results) => {
+
+                        downloader.DoDownloadResVersion(remoteResVersion);
 
                         ReplaceLocalRes();
                         //also update ResData
@@ -227,7 +238,19 @@ namespace MikroFramework.ResKit
                             if (abmd5Base.AssetName != ResKitUtility.CurrentPlatformName)
                             {
                                 AssetBundleData abData = ResData.Singleton.GetAssetBundleDataFromABName(abmd5Base.AssetName);
-                                abData.LoadOption = AssetBundleLoadOption.FromHotUpdateFolder;
+                                if (abData != null) {
+                                    abData.LoadOption = AssetBundleLoadOption.FromHotUpdateFolder;
+                                }
+                                else {
+                                    ResData.Singleton.AssetBundleDatas.Add(new AssetBundleData() {
+                                        AssetDataList = abmd5Base.assetDatas,
+                                        LoadOption = AssetBundleLoadOption.FromHotUpdateFolder,
+                                        Name = abmd5Base.AssetName,
+                                        MD5 = abmd5Base.MD5
+                                    });
+                                    
+                                }
+                                
                             }
                             else
                             {
@@ -263,9 +286,15 @@ namespace MikroFramework.ResKit
                 List<FileInfo> allNativeFiles;
                 List<string> resVersionFileNames = ResKitUtility.GetAllRawAssetNamesFromResVersion(resVersion);
 
+                
                 allNativeFiles = FileUtility.GetAllDirectoryFiles(
                     ResKitUtility.HotUpdateAssetBundleFolder,
                     true, true);
+
+                if (allNativeFiles == null) {
+                    onFinished?.Invoke();
+                    return;
+                }
 
                 List<FileInfo> filesReadyToDelete = new List<FileInfo>();
 
@@ -323,107 +352,26 @@ namespace MikroFramework.ResKit
             });
         }
 
-        /// <summary>
-        /// Get the download progress (between 0-1) of all the current downloading files
-        /// </summary>
-        /// <returns></returns>
-        public float GetDownloadProgress() {
-            List<ABMD5Base> filesAlreadyDownloaded = HotUpdateDownloader.filesAlreadyDownloaded;
-            if (filesAlreadyDownloaded.Count > 0) {
-                float totalDownloadSize = GetTotalDownloadFileSize();
-                float alreadyDownloadedSize = GetAlreadyDownloadedFileSize();
-                float downloadingFileSize = GetDownloadingFileSize();
 
-                return (alreadyDownloadedSize + downloadingFileSize) / totalDownloadSize;
-            }
-
-            return 0;
-        }
-
-        
-
-        /// <summary>
-        /// Return the total size (kb) of all the files need to be downloaded currently
-        /// </summary>
-        /// <returns></returns>
-        public float GetTotalDownloadFileSize() {
-            if (HotUpdateDownloader.totalDownloadingFiles.Count > 0) {
-                return HotUpdateDownloader.totalDownloadingFiles.Sum(x => x.FileSize);
-            }
-
-            return 0;
-        }
-
-
-        /// <summary>
-        /// Return the total size (kb) of all the files that have already downloaded in the current downloading progress
-        /// </summary>
-        /// <returns></returns>
-        public float GetAlreadyDownloadedFileSize() {
-            if (HotUpdateDownloader.filesAlreadyDownloaded.Count > 0) {
-                return HotUpdateDownloader.filesAlreadyDownloaded.Sum(x => x.FileSize);
-            }
-
-            return 0;
-        }
-
-        /// <summary>
-        /// Get the file size  that has already been downloaded of the currently downloading single file
-        /// return 0 if nothing is downloading
-        /// </summary>
-        /// <returns></returns>
-        public float GetDownloadingFileSize() {
-            if (HotUpdateDownloader.downloadingFileRequest != null)
-            {
-                 return HotUpdateDownloader.downloadingFileRequest.downloadedBytes / 1000.0f;
-            }
-
-            return 0;
-        }
-
-        /// <summary>
-        /// Get the current download speed (kb/s). You must also call EnableUpdateDownloadSpeed() method before
-        /// to update real-time download speed. It will return -1 if EnableUpdateDownloadSpeed hasn't been called
-        /// </summary>
-        /// <returns></returns>
-        public float GetDownloadSpeed() {
-            return downloadSpeed;
-        }
-
+       
         /// <summary>
         /// Enable the hot-update manager to update real-time download speed (this may cost extra memory). 
         /// </summary>
         /// <param name="updateInterval">Update time interval (seconds)</param>
         public void EnableUpdateDownloadSpeed(float updateInterval = 1f) {
-            showDownloadSpeedEnabled = true;
+            downloader.EnableUpdateDownloadSpeed(updateInterval);
         }
 
         /// <summary>
         /// Disable the hot-update manager to update real-time download speed
         /// </summary>
         public void DisableUpdateDownloadSpeed() {
-            showDownloadSpeedEnabled = false;
+            downloader.DisableUpdateDownloadSpeed();
         }
 
         #region Helpers
 
-        void Update() {
-            StartCoroutine(UpdateDownloadSpeed());
-        }
-
-        private IEnumerator UpdateDownloadSpeed() {
-            while (showDownloadSpeedEnabled && downloadSpeedUpdateTimeInterval>0) {
-                float prevDownloadProgress = GetAlreadyDownloadedFileSize() + GetDownloadingFileSize();
-                
-                yield return new WaitForSeconds(downloadSpeedUpdateTimeInterval);
-                
-                float currentDownloadProgress = GetAlreadyDownloadedFileSize() + GetDownloadingFileSize();
-
-                downloadSpeed = (currentDownloadProgress - prevDownloadProgress) / downloadSpeedUpdateTimeInterval;
-            }
-
-            downloadSpeed = -1;
-        }
+        
 
         private bool CheckNativeABCompleteness(ABMD5Base remoteAB)
         {
@@ -477,13 +425,13 @@ namespace MikroFramework.ResKit
         /// <param name="onResDownloaded"></param>
         private void DownloadRes(Action onResDownloaded, Action<HotUpdateError> ondownloadFailed)
         {
-            StartCoroutine(HotUpdateDownloader.RequestGetRemoteResVersion(remoteResVersion => {
-                HotUpdateDownloader.DoDownloadResVersion(remoteResVersion);
+            StartCoroutine(downloader.RequestGetRemoteResVersion(remoteResVersion => {
+                downloader.DoDownloadResVersion(remoteResVersion);
                 List<AssetBundleData> nativeABDatas = ResData.Singleton.AssetBundleDatas;
 
                 List<ABMD5Base> needUpdateFileInfos = CollectNeedUpdateABs(nativeABDatas, remoteResVersion);
 
-                StartCoroutine(HotUpdateDownloader.DoDownloadRemoteABs(needUpdateFileInfos, (results) => {
+                StartCoroutine(downloader.DoDownloadRemoteABs(needUpdateFileInfos, (results) => {
                     UpdateABDatas(nativeABDatas, results);
                     onResDownloaded.Invoke();
                 }, error => {

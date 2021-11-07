@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace MikroFramework.Architecture
 {
     public interface ICanGetSystem : IBelongToArchitecture
     {
-
     }
 
     public static class CanGetSystemExtension

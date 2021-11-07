@@ -39,6 +39,10 @@ namespace MikroFramework.Singletons
                     return instance;
                 }
 
+                if (instance != null) {
+                    return instance;
+                }
+
                 Type info = typeof(T);
 
                 instance = info.GetCustomAttributes(false).Cast<MonoSingletonPath>().Select(monoSingletonPath =>

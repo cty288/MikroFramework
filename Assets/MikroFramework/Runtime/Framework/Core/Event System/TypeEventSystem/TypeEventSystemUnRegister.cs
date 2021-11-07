@@ -11,6 +11,11 @@ namespace MikroFramework.Event
     {
         public ITypeEventSystem TypeEventSystem;
         public Action<T> OnEvent;
+
+        public TypeEventSystemUnRegister(ITypeEventSystem typeEventSystem, Action<T> onEvent) {
+            this.TypeEventSystem = typeEventSystem;
+            this.OnEvent = onEvent;
+        }
         public void UnRegister()
         {
             TypeEventSystem.UnRegister<T>(OnEvent);
@@ -18,23 +23,6 @@ namespace MikroFramework.Event
             OnEvent = null;
         }
 
-        public void OnRecycled() {
-            
-        }
-
-        public bool IsRecycled { get; set; }
-        public void RecycleToCache()
-        {
-            SafeObjectPool<TypeEventSystemUnRegister<T>>.Singleton.Recycle(this);
-        }
-
-        public static TypeEventSystemUnRegister<T> Allocate( ITypeEventSystem typeEventSystem, Action<T> onEvent)
-        {
-            TypeEventSystemUnRegister<T> unRegister = SafeObjectPool<TypeEventSystemUnRegister<T>>.Singleton.Allocate();
-            unRegister.TypeEventSystem = typeEventSystem;
-            unRegister.OnEvent = onEvent;
-            return unRegister;
-        }
     }
 
 }
