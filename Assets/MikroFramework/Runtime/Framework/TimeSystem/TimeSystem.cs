@@ -13,6 +13,8 @@ namespace MikroFramework.TimeSystem
         {
             public event Action OnUpdate;
 
+
+
             private void Update()
             {
                 OnUpdate?.Invoke();
@@ -22,24 +24,44 @@ namespace MikroFramework.TimeSystem
         private List<DelayTask> taskList = new List<DelayTask>();
 
         private TimeSystemUpdate updater;
-
-        public TimeSystem() {
+        private bool isStart = false;
+        public bool IsStart
+        {
+            get
+            {
+                return isStart;
+            }
+        }
+        public TimeSystem()
+        {
             OnInit();
+            Start();
         }
 
         /// <summary>
         /// Start or resume the timer
         /// </summary>
-        public void Start() {
+        public void Start()
+        {
             updater.OnUpdate -= OnUpdate;
             updater.OnUpdate += OnUpdate;
+            isStart = true;
+        }
+
+        public void Reset()
+        {
+            CurrentSeconds = 0;
+            delayTasks.Clear();
+            taskList.Clear();
         }
 
         /// <summary>
         /// Pause the timer
         /// </summary>
-        public void Pause() {
+        public void Pause()
+        {
             updater.OnUpdate -= OnUpdate;
+            isStart = false;
         }
 
         protected override void OnInit()
@@ -105,17 +127,19 @@ namespace MikroFramework.TimeSystem
         /// <summary>
         /// Reset the timer
         /// </summary>
-        public void Reset() {
+        public void Restart()
+        {
             CurrentSeconds = 0;
             delayTasks.Clear();
 
-            foreach (DelayTask delayTask in taskList) {
+            foreach (DelayTask delayTask in taskList)
+            {
                 delayTask.State = DelayTaskState.NotStart;
                 delayTasks.AddLast(delayTask);
             }
         }
 
-        
+
     }
 
 }

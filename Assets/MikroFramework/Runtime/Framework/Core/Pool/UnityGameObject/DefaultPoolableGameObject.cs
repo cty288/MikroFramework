@@ -11,7 +11,7 @@ namespace MikroFramework.ResKit
     public class DefaultPoolableGameObject: PoolableGameObject
     {
         public override void OnRecycled() {
-            
+            transform.SetParent(Pool.transform);
         }
     }
 }

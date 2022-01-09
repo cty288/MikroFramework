@@ -9,9 +9,10 @@ namespace MikroFramework.Architecture
     /// Non-async command
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class AbstractCommand<T> : ICommand where T: AbstractCommand<T>, new()
+    public abstract class AbstractCommand<T> : ICommand where T : AbstractCommand<T>, new()
     {
         private IArchitecture architectureModel;
+        protected virtual bool AutoRecycle { get; } = true;
 
         IArchitecture IBelongToArchitecture.GetArchitecture()
         {
@@ -24,9 +25,14 @@ namespace MikroFramework.Architecture
         }
 
 
-        void ICommand.Execute() {
+        void ICommand.Execute()
+        {
             OnExecute();
-            RecycleToCache();
+            if (AutoRecycle)
+            {
+                RecycleToCache();
+            }
+
         }
 
         /// <summary>
@@ -35,16 +41,18 @@ namespace MikroFramework.Architecture
         /// <param name="parameters"></param>
         protected abstract void OnExecute();
 
-        public virtual void OnRecycled() {
+        public virtual void OnRecycled()
+        {
             architectureModel = null;
         }
 
         public bool IsRecycled { get; set; }
 
-        public void RecycleToCache() {
+        public void RecycleToCache()
+        {
             SafeObjectPool<T>.Singleton.Recycle(this as T);
         }
 
-       
+
     }
 }

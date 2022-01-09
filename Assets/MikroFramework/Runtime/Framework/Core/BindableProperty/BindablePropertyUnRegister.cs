@@ -8,18 +8,39 @@ using MikroFramework.Pool;
 
 namespace MikroFramework.BindableProperty
 {
-    class BindablePropertyUnRegister<T>:IUnRegister
+    class BindablePropertyUnRegister<T> : IUnRegister
     {
         public BindableProperty<T> Bindable { get; set; }
 
         public Action<T> OnValueChanged { get; set; }
 
-        public BindablePropertyUnRegister(BindableProperty<T> bindable, Action<T> onValueChanged) {
+        public BindablePropertyUnRegister(BindableProperty<T> bindable, Action<T> onValueChanged)
+        {
             this.Bindable = bindable;
             this.OnValueChanged = onValueChanged;
         }
 
-        public void UnRegister() {
+        public void UnRegister()
+        {
+            Bindable.UnRegisterOnValueChanged(OnValueChanged);
+            Bindable = null;
+        }
+
+    }
+    class BindablePropertyUnRegister2<T> : IUnRegister
+    {
+        public BindableProperty<T> Bindable { get; set; }
+
+        public Action<T, T> OnValueChanged { get; set; }
+
+        public BindablePropertyUnRegister2(BindableProperty<T> bindable, Action<T, T> onValueChanged)
+        {
+            this.Bindable = bindable;
+            this.OnValueChanged = onValueChanged;
+        }
+
+        public void UnRegister()
+        {
             Bindable.UnRegisterOnValueChanged(OnValueChanged);
             Bindable = null;
         }

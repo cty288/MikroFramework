@@ -19,11 +19,18 @@ namespace MikroFramework.Examples
         }
 #endif
         private PlayerInfo playerInfo;
+
+        public BindableProperty<int> health = new BindableProperty<int>() {Value = 1};
+
+        
+
         private void Start() {
+           
             playerInfo = new PlayerInfo();
             playerInfo.Name.Value = "TestName";
             playerInfo.Age.Value = 10;
             playerInfo.State.Value = new PlayerState() {hp = 10, mp = 20};
+
 
             playerInfo.Age.RegisterOnValueChaned(age => {
                 Debug.Log($"New age: {age}");
@@ -47,9 +54,11 @@ namespace MikroFramework.Examples
 
     [Serializable]
     public class PlayerInfo {
-        public BindableProperty<string> Name { get; set; } = new BindableProperty<string>(){Value = ""};
-        public BindableProperty<int> Age { get; set; } = new BindableProperty<int>(){Value = 0};
-        public BindableProperty<PlayerState> State { get; set; }  = new BindableProperty<PlayerState>(){Value = new PlayerState()};
+        public BindableProperty<string> Name { get; set; } = new BindableProperty<string>("");
+        public BindableProperty<int> Age { get; set; } = new BindableProperty<int>(0);
+        public BindableProperty<PlayerState> State { get; set; } = new BindableProperty<PlayerState>(new PlayerState());
+
+
     }
 
 

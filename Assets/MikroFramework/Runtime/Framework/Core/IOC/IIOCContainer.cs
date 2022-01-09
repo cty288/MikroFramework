@@ -14,7 +14,7 @@ namespace MikroFramework.IOC
         void Register<T>();
 
         /// <summary>
-        /// RegisterInstance an existing singleton of type T to the container
+        /// Register an existing singleton of type T to the container
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="instance"></param>
@@ -22,12 +22,17 @@ namespace MikroFramework.IOC
 
 
         /// <summary>
-        /// RegisterInstance an existing singleton to the container
+        /// Register an existing singleton to the container
         /// </summary>
         /// <param name="instance"></param>
         void RegisterInstance(object instance);
 
-
+        /// <summary>
+        /// Register an singleton of type T to the container, this singleton is a concrete class of its base class
+        /// When getting this singleton, you can use GetInstance<TBase> to get the concrete instance with the type of base class
+        /// </summary>
+        /// <typeparam name="TBase"></typeparam>
+        /// <typeparam name="TConcrete"></typeparam>
         void RegisterInstance<TBase, TConcrete>() where TConcrete : TBase;
 
         /// <summary>
@@ -48,7 +53,7 @@ namespace MikroFramework.IOC
 
         /// <summary>
         /// Inject all dependency properties of an object. Those properties should be marked attributes [IOCInject],
-        /// and they should be registered into the IOC Container
+        /// and the instances of those properties be registered into the IOC Container
         /// </summary>
         /// <param name="obj"></param>
         void Inject(object obj);

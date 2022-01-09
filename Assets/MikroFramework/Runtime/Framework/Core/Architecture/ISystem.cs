@@ -5,7 +5,7 @@ using UnityEngine;
 namespace MikroFramework.Architecture
 {
     public interface ISystem : IBelongToArchitecture, ICanSetArchitecture, ICanGetModel, ICanGetUtility,
-    ICanSendEvent,ICanRegisterEvent,ICanGetSystem{
+    ICanSendEvent,ICanRegisterEvent,ICanGetSystem, ICanSendQuery{
         void Init();
     }
 }

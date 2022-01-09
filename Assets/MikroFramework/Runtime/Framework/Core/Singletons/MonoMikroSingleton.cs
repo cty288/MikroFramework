@@ -13,7 +13,19 @@ namespace MikroFramework.Singletons {
 
         protected static T instance=null;
 
-        
+        private void Awake() {
+            if (instance == null) {
+                instance = this as T;
+            }
+            else
+            {
+                if (this != instance)
+                {
+                    Destroy(this.gameObject);
+                }
+            }
+        }
+
         public static T Singleton {
             get
             {

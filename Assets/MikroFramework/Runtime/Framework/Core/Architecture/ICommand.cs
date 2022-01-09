@@ -6,7 +6,7 @@ using UnityEngine;
 namespace MikroFramework.Architecture
 {
     public interface ICommand : IBelongToArchitecture,ICanSetArchitecture, ICanGetSystem, ICanGetModel,
-    ICanGetUtility, ICanSendEvent, ICanSendCommand, IPoolable{
+    ICanGetUtility, ICanSendEvent, ICanSendCommand, IPoolable, ICanSendQuery{
         void Execute();
     }
 }

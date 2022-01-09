@@ -69,7 +69,7 @@ namespace MikroFramework.Architecture
         public void RegisterModel<T>(T model) where T : IModel {
             model.SetArchitecture(this);
             container.RegisterInstance<T>(model);
-
+            
             if (!inited) {
                 models.Add(model);
             }

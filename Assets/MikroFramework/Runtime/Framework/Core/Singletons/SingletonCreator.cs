@@ -40,6 +40,7 @@ namespace MikroFramework.Singletons
                 }
 
                 if (instance != null) {
+                    instance.OnSingletonInit();
                     return instance;
                 }
 

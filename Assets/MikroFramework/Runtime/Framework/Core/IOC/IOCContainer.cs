@@ -97,7 +97,7 @@ namespace MikroFramework.IOC
                 return Activator.CreateInstance<T>();
             }
 
-            return null;
+            return default;
         }
 
         public T GetInstance<T>() where T : class {

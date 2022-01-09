@@ -9,6 +9,11 @@ namespace MikroFramework.Utilities {
     public class Exporter
     {
         private static string GenerateBuildPackageName() {
+            /*
+            EditorPrefs.SetInt("FrameworkVersion_Major", 0);
+            EditorPrefs.SetInt("FrameworkVersion_Minor", 1);
+            EditorPrefs.SetInt("FrameworkVersion_Build", 5);*/
+            
             AddCurrentFrameworkBuildVersion();
             return "Builds/MikroFramework_v." + GetCurrentFrameworkVersionString() + ".unitypackage";
         }
@@ -54,6 +59,8 @@ namespace MikroFramework.Utilities {
         }
 
         private static string GetCurrentFrameworkVersionString() {
+           
+
             return EditorPrefs.GetInt("FrameworkVersion_Major", 0) + "." +
                    EditorPrefs.GetInt("FrameworkVersion_Minor", 0) + "." +
                    EditorPrefs.GetInt("FrameworkVersion_Build", 26);

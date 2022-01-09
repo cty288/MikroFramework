@@ -6,22 +6,21 @@ using UnityEngine;
 namespace MikroFramework.Playground
 {
     public partial class CounterViewController : MonoBehaviour {
-        private CounterExampleModel model = new CounterExampleModel();
 
         private void Start() {
             addButton.onClick.AddListener(() => {
-                model.Count++;
+                new ChangeCounterCommand(1).Execute();
             });
 
             subtractButton.onClick.AddListener(() => {
-                model.Count--;
+                new ChangeCounterCommand(-1).Execute();
+            });
+
+            CounterExampleModel.Singleton.Count.RegisterOnValueChaned(newValue => {
+                numberText.text = newValue.ToString();
             });
 
             numberText.text = "0";
-        }
-
-        private void Update() {
-            numberText.text = model.Count.ToString();
         }
     }
 }

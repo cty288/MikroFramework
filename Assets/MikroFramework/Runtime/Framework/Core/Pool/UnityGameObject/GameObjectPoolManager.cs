@@ -84,11 +84,13 @@ namespace MikroFramework
         private bool CheckPoolExists(GameObject prefab, out SafeGameObjectPool pool) {
             string prefabName = prefab.name;
             if (!pools.ContainsKey(prefabName)) {
-                SafeGameObjectPool existingPool = GameObject.Find($"Object Pool: {prefabName}").GetComponent<SafeGameObjectPool>();
-                if (existingPool) {
-                    pools.Add(prefabName,existingPool);
-                    pool = existingPool;
-                    return true;
+                GameObject existingPoolGo = GameObject.Find($"Object Pool: {prefabName}"); //;.GetComponent<SafeGameObjectPool>();
+                if (existingPoolGo) {
+                    if (existingPoolGo.TryGetComponent<SafeGameObjectPool>(out SafeGameObjectPool existingPool)) {
+                        pools.Add(prefabName, existingPool);
+                        pool = existingPool;
+                        return true;
+                    }
                 }
 
                 pool = null;

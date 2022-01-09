@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using MikroFramework.Singletons;
@@ -17,6 +18,16 @@ namespace MikroFramework.Examples
         }
 #endif
 
+        private void Awake() {
+            Singleton.Test();
+        }
+
+        void Test(){}
+
+        public override void OnSingletonInit() {
+            base.OnSingletonInit();
+            Debug.Log("Singleton Init");
+        }
 
         //[RuntimeInitializeOnLoadMethod]
         private static void Example() {
