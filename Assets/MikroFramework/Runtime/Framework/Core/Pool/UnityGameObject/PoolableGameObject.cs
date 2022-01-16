@@ -7,7 +7,8 @@ using UnityEngine;
 
 namespace MikroFramework.Pool
 {
-    public abstract class PoolableGameObject:MonoBehaviour {
+    public abstract class PoolableGameObject : MonoBehaviour
+    {
 
         /// <summary>
         /// The pool that belongs to this object
@@ -17,12 +18,15 @@ namespace MikroFramework.Pool
         /// <summary>
         /// Call this method to recycle this gameobject back to its pool
         /// </summary>
-        public void RecycleToCache() {
+        public void RecycleToCache()
+        {
             Pool.Recycle(this.gameObject);
             Pool = null;
         }
 
-        
+        public abstract void OnInit();
+
+
         /// <summary>
         /// Triggered after recycled back to the pool, or after calling Recycle()
         /// </summary>

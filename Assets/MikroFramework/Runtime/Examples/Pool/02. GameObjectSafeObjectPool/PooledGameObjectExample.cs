@@ -12,6 +12,10 @@ namespace MikroFramework.Examples
 
         public int Id;
 
+        public override void OnInit() {
+            
+        }
+
         public override void OnRecycled()
         {
             Debug.Log($"{gameObject.name} - ID: {Id} recycled!");
