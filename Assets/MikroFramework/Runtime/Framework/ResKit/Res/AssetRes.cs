@@ -53,8 +53,11 @@ namespace MikroFramework.ResKit
 #if UNITY_EDITOR
                     string[] assetPaths = 
                         UnityEditor.AssetDatabase.GetAssetPathsFromAssetBundleAndAssetName(ownerBundleName, nameInAB);
-                    Asset = UnityEditor.AssetDatabase.LoadAssetAtPath<Object>(assetPaths[0]);
-                    State = ResState.Loaded;
+                    if (assetPaths.Length > 0) {
+                        Asset = UnityEditor.AssetDatabase.LoadAssetAtPath<Object>(assetPaths[0]);
+                        State = ResState.Loaded;
+                    }
+                   
 #endif
                 }
                 else {
@@ -83,7 +86,11 @@ namespace MikroFramework.ResKit
                 string[] assetPaths =
                     UnityEditor.AssetDatabase.GetAssetPathsFromAssetBundleAndAssetName(ownerBundleName, nameInAB);
 
-                Asset = UnityEditor.AssetDatabase.LoadAssetAtPath<Object>(assetPaths[0]);
+                if (assetPaths.Length > 0)
+                {
+                    Asset = UnityEditor.AssetDatabase.LoadAssetAtPath<Object>(assetPaths[0]);
+                    State = ResState.Loaded;
+                }
 #endif
             }
             else {
@@ -108,6 +115,7 @@ namespace MikroFramework.ResKit
             Asset = null;
             resLoader.ReleaseAllAssets();
             resLoader = null;
+            //resLoader = new ResLoader();
         }
 
         public override void RecycleToCache() {

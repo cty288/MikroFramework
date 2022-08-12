@@ -145,6 +145,7 @@ namespace MikroFramework.Utilities
 #else
                 return GetPlatformName(Application.platform);
 #endif
+                
             }
         }
 

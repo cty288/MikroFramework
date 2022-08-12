@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace MikroFramework.ResKit
 {
-    [MonoSingletonPath("[FrameworkPersistent]/[ResKit]/ResManager")]
+   // [MonoSingletonPath("[FrameworkPersistent]/[ResKit]/ResManager")]
     public class ResManager : ManagerBehavior,ISingleton {
 
         private ResTable SharedLoadedResources = new ResTable();

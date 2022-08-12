@@ -93,7 +93,7 @@ namespace MikroFramework.ResKit {
         /// </summary>
         public void UpdateManifest() {
             string filePath = ResKitUtility.GetAssetBundlePath(ResKitUtility.CurrentPlatformName);
-
+            Debug.Log(filePath);
             if (File.Exists(filePath)) {
                 if (manifestBundle != null) {
                     manifestBundle.Unload(true);
@@ -126,7 +126,7 @@ namespace MikroFramework.ResKit {
 
                         data.Name = assetPath.Split('/').Last().Split('.').First();
                         data.OwnerBundleName = abName;
-                        data.AssetType = UnityEditor.AssetDatabase.GetMainAssetTypeAtPath(assetPath);
+                        data.AssetType = UnityEditor.AssetDatabase.GetMainAssetTypeAtPath(assetPath).ToString();
 
                         assetBundleData.AssetDataList.Add(data);
 
@@ -252,7 +252,7 @@ namespace MikroFramework.ResKit {
                         }
                         foreach (AssetData data in assetDataTable)
                         {
-                            Debug.Log(data.Name + "     " + data.OwnerBundleName+"    "+data.AssetType.Name);
+                            Debug.Log(data.Name + "     " + data.OwnerBundleName+"    "+data.AssetType);
                         }
                         UpdateManifest();
                         onFinished?.Invoke();

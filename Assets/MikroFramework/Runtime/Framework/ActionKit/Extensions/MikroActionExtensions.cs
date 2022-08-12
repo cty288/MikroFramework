@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
+using MikroFramework.Event;
 using UnityEngine;
 
 namespace MikroFramework.ActionKit
@@ -19,6 +21,11 @@ namespace MikroFramework.ActionKit
             UntilAction untilAction=UntilAction.Allocate(triggeredCondition);
             untilAction.OnEndedCallback = untilCallback;
             return self.AddAction(untilAction);
+        }
+
+        public static MikroAction StopActionWhenGameObjectDestroyed(this MikroAction action, GameObject gameObject) {
+            action.SetStopExecutingWhenTargetGameObjectDestroyed(gameObject);
+            return action;
         }
 
         /// <summary>

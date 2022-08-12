@@ -76,7 +76,6 @@ namespace MikroFramework.Managers
                 resLoader = new ResLoader();
                 OnRedundantFilesDeleted();
                 OnHotUpdateComplete();
-                
             },OnHotUpdateError);
         }
 

@@ -29,7 +29,7 @@ namespace MikroFramework.Singletons
                 {
                     if (typeof(MonoBehaviour).IsAssignableFrom(typeof(T)))
                     { //is MonoBehavior
-                        instance = SingletonCreator.CreateMonoSingleton<T>(true);
+                        instance = SingletonCreator.CreateMonoSingleton<T>(false);
 
                     }
                     else

@@ -24,7 +24,11 @@ namespace MikroFramework.Pool
 
         [SerializeField]
         protected GameObject pooledPrefab;
-        public GameObject PooledPrefab => pooledPrefab;
+
+        public GameObject PooledPrefab {
+            get => pooledPrefab;
+            set => pooledPrefab = value;
+        }
 
         /// <summary>
         /// Create a new GameObject Pool, given the type of the GameObject Pool

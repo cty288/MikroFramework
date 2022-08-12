@@ -13,15 +13,18 @@ namespace MikroFramework.Pool
         /// <summary>
         /// The pool that belongs to this object
         /// </summary>
-        public SafeGameObjectPool Pool;
+        public GameObjectPool Pool;
 
         /// <summary>
         /// Call this method to recycle this gameobject back to its pool
         /// </summary>
         public void RecycleToCache()
         {
-            Pool.Recycle(this.gameObject);
-            Pool = null;
+            if (Pool != null) {
+                Pool.Recycle(this.gameObject);
+                Pool = null;
+            }
+          
         }
 
         public abstract void OnInit();

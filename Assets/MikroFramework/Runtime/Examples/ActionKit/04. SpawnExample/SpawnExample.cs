@@ -15,7 +15,6 @@ namespace MikroFramework.Examples
         {
             
             Spawn spawn = Spawn.Allocate();
-
             double totalElapsedSeconds = 0;
 
             for (int i = 0; i < 300; i++)

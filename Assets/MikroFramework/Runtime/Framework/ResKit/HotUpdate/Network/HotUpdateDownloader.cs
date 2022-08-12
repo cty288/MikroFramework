@@ -30,7 +30,7 @@ namespace MikroFramework.ResKit
         public IEnumerator GetLocalAssetResVersion(Action<ResVersion> getResVersion, Action<HotUpdateError>
             onGetFailed)
         {
-            string localResVersionPath = HotUpdateConfig.LocalResVersionFilePath;
+            string localResVersionPath = "file://" + HotUpdateConfig.LocalResVersionFilePath;
 
             UnityWebRequest request = UnityWebRequest.Get(localResVersionPath);
 
@@ -62,6 +62,7 @@ namespace MikroFramework.ResKit
             Debug.Log(remoteResVersionPath);
 
             UnityWebRequest request = UnityWebRequest.Get(remoteResVersionPath);
+            //request.timeout = 5;
             yield return request.SendWebRequest();
             
             if (request.isHttpError || request.isNetworkError)
@@ -114,7 +115,7 @@ namespace MikroFramework.ResKit
             {
                 downloadingFileRequest = UnityWebRequest.Get(remoteBasePath + downloadAsset.AssetName);
 
-                
+                //downloadingFileRequest.timeout = 5;
                 yield return downloadingFileRequest.SendWebRequest();
 
                 if (downloadingFileRequest.isHttpError || downloadingFileRequest.isNetworkError)

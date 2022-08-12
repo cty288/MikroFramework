@@ -83,7 +83,7 @@ namespace MikroFramework.Singletons {
             get { return onApplicationQuit; }
         }
 
-        private void OnApplicationQuit() {
+        protected virtual void OnApplicationQuit() {
             onApplicationQuit = true;
             if (instance != null) {
                 Destroy(instance.gameObject);

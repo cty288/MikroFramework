@@ -33,6 +33,7 @@ namespace MikroFramework.Utilities
         public void Release(object refOwner = null)
         {
             RefCount--;
+            RefCount = Mathf.Max(0, RefCount);
             if (RefCount == 0)
             {
                 OnZeroRef();
@@ -41,7 +42,7 @@ namespace MikroFramework.Utilities
         }
 
 
-        public void Retain(object refOwner = null) {
+        public virtual void Retain(object refOwner = null) {
             RefCount++;
         }
 

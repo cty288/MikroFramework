@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using MikroFramework.Architecture;
 using MikroFramework.BindableProperty;
+using MikroFramework.Event;
 using MikroFramework.Pool;
 using UnityEngine;
 
 namespace MikroFramework.ActionKit
 {
+   
     public abstract class MikroAction: ICommand, IPoolable {
         public BindableProperty<bool> Finished = new BindableProperty<bool>(){Value = false};
 
@@ -15,6 +17,8 @@ namespace MikroFramework.ActionKit
         public Action OnBeginCallback;
 
         private IArchitecture architectureModel;
+
+        private GameObject stopExecutingWhenGameObjectDestroyedTarget;
         public void Execute() {
             Finished.Value = false;
             Finished.RegisterOnValueChaned(OnFinishedValueChanged);
@@ -30,7 +34,10 @@ namespace MikroFramework.ActionKit
             if (!Finished.Value && !IsRecycled) {
                 //ActionPlayer.Singleton.UnRegisterUpdate(Executing);
                 
-                ActionPlayer.Singleton.RegisterUpdate(Executing);
+                IUnRegister unRegister = ActionPlayer.Singleton.RegisterUpdate(this, Executing);
+                if (stopExecutingWhenGameObjectDestroyedTarget) {
+                    unRegister.UnRegisterWhenGameObjectDestroyed(stopExecutingWhenGameObjectDestroyedTarget);
+                }
             }
             
         }
@@ -88,6 +95,11 @@ namespace MikroFramework.ActionKit
 
         protected bool AutoRecycle = true;
 
+        public MikroAction SetStopExecutingWhenTargetGameObjectDestroyed(GameObject target) {
+            this.stopExecutingWhenGameObjectDestroyedTarget = target;
+            return this;
+        }
+        
         private void OnFinishedValueChanged(bool finished) {
             if (finished) {
                 ActionPlayer.Singleton.UnRegisterUpdate(Executing);

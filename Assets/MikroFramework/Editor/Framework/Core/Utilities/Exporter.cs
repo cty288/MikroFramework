@@ -9,10 +9,10 @@ namespace MikroFramework.Utilities {
     public class Exporter
     {
         private static string GenerateBuildPackageName() {
-            /*
+            
             EditorPrefs.SetInt("FrameworkVersion_Major", 0);
             EditorPrefs.SetInt("FrameworkVersion_Minor", 1);
-            EditorPrefs.SetInt("FrameworkVersion_Build", 5);*/
+            EditorPrefs.SetInt("FrameworkVersion_Build", 9);
             
             AddCurrentFrameworkBuildVersion();
             return "Builds/MikroFramework_v." + GetCurrentFrameworkVersionString() + ".unitypackage";

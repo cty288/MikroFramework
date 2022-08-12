@@ -49,16 +49,20 @@ namespace MikroFramework.ResKit
 
             foreach (var bundleName in dependencyBundleNames)
             {
-                resLoader.LoadAsync<AssetBundle>(bundleName,
-                    (ab) => {
-                        loadedCount++;
+                if (bundleName != Name)
+                {
+                    resLoader.LoadAsync<AssetBundle>(bundleName,
+                        (ab) => {
+                            loadedCount++;
 
-                        if (loadedCount == dependencyBundleNames.Length)
-                        {
-                            onAllLoaded?.Invoke();
-                        }
-                    });
-                Debug.Log($"Loaded Dependency: {bundleName}");
+                            if (loadedCount == dependencyBundleNames.Length)
+                            {
+                                onAllLoaded?.Invoke();
+                            }
+                        });
+                    Debug.Log($"Loaded Dependency: {bundleName}");
+                }
+             
             }
         }
 
@@ -88,11 +92,15 @@ namespace MikroFramework.ResKit
             string[] dependencyBundleNames = ResData.Singleton.GetDirectDependencies(Name);
 
             foreach (var bundleName in dependencyBundleNames) {
-                resLoader.LoadSync<AssetBundle>(bundleName);
-                Debug.Log($"Loaded Dependency: {bundleName}");
+                if (bundleName != Name) {
+                    resLoader.LoadSync<AssetBundle>(bundleName);
+                    Debug.Log($"Loaded Dependency: {bundleName}");
+                }
+              
             }
 
             if (!ResManager.IsSimulationModeLogic) {
+                Debug.Log($"AssetBundle Asset Path: {AssetPath}");
                 AssetBundle = AssetBundle.LoadFromFile(AssetPath);
             }
 
@@ -107,10 +115,9 @@ namespace MikroFramework.ResKit
 
                 resLoader.ReleaseAllAssets();
                 resLoader = null;
+              //  resLoader = new ResLoader();
             }
 
-
-            
             AssetBundle = null;
         }
 

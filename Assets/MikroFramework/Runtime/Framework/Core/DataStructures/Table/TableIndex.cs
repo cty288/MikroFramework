@@ -37,7 +37,10 @@ namespace MikroFramework.DataStructures
         /// <param name="dataItem"></param>
         public void Remove(TDataItem dataItem) {
             TKeyType key = getKeyByDataItem(dataItem);
-            index[key].Remove(dataItem);
+            //if (index.ContainsKey(key)) {
+                index[key].Remove(dataItem);
+            //}
+           
         }
 
         /// <summary>

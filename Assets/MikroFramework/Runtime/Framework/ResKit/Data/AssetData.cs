@@ -13,6 +13,6 @@ namespace MikroFramework.ResKit
         public string Name;
         public string OwnerBundleName;
 
-        public Type AssetType;
+        public string AssetType;
     }
 }
