@@ -16,8 +16,7 @@ namespace MikroFramework.Utilities
 
         private SimpleRC enterRC = new SimpleRC();
 
-        [SerializeField]
-        private HashSet<Collider2D> colliders;
+        [SerializeField] private HashSet<Collider2D> colliders = new HashSet<Collider2D>();
         /// <summary>
         /// Get all 2D colliders that are in the current trigger of this object
         /// </summary>

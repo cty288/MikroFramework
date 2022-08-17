@@ -12,13 +12,17 @@ namespace MikroFramework.TimeSystem
         Finished
     }
 
-    public class DelayTask : MonoBehaviour
+    public class DelayTask
     {
         public float Seconds { get; set; }
         public Action OnFinish { get; set; }
         public float StartSeconds { get; set; }
         public float FinishSeconds { get; set; }
         public DelayTaskState State { get; set; }
+        
+        public int MaxLoopCount { get; set; }
+
+        public int CurrentLoopCount { get; set; }
     }
 }
 

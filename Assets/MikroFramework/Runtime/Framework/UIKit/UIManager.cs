@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using MikroFramework.Managers;
 using MikroFramework.Singletons;
 using UnityEngine;
 using UnityEngine.UI;
+using Object = UnityEngine.Object;
 
 namespace MikroFramework.UIKit {
     public enum UILayer
@@ -42,7 +44,7 @@ namespace MikroFramework.UIKit {
             }
         }
 
-
+        [Obsolete]
         /// <summary>
         /// Set the resolution of the canvas ("Scale with Screen Size" mode)
         /// </summary>
@@ -54,7 +56,7 @@ namespace MikroFramework.UIKit {
             canvasScaler.referenceResolution = new Vector2(width, height);
             canvasScaler.matchWidthOrHeight = matchWidthOrHeight;
         }
-
+        [Obsolete]
         public static GameObject LoadPanel(string panelName,UILayer uiLayer) {
 
             GameObject panelPrefab = Resources.Load<GameObject>(panelName);
@@ -88,7 +90,7 @@ namespace MikroFramework.UIKit {
 
             return panelObj;
         }
-
+        [Obsolete]
         public static void UnLoadPanel(string panelName) {
             if (singleton.panelDictionary.ContainsKey(panelName)) {
                 Destroy(singleton.panelDictionary[panelName]);

@@ -7,6 +7,14 @@ using Object = UnityEngine.Object;
 
 namespace MikroFramework.TimeSystem
 {
+
+    public enum TimerUnit {
+        Millisecond,
+        Second,
+        Minute,
+        Hour,
+        Day
+    }
     public class TimeSystem : AbstractSystem, ITimeSystem
     {
         public class TimeSystemUpdate : MonoBehaviour
@@ -93,11 +101,20 @@ namespace MikroFramework.TimeSystem
                     }
                     else if (delayTask.State == DelayTaskState.Started)
                     {
-                        if (CurrentSeconds > delayTask.FinishSeconds)
-                        {
-                            delayTask.State = DelayTaskState.Finished;
+                        if (CurrentSeconds > delayTask.FinishSeconds) {
+                            delayTask.CurrentLoopCount++;
+
+                            if (delayTask.CurrentLoopCount >= delayTask.MaxLoopCount && delayTask.MaxLoopCount>=0) {
+                                delayTask.State = DelayTaskState.Finished;
+                                
+                                delayTasks.Remove(currentNode);
+                            }
+                            else {
+                                delayTask.StartSeconds = CurrentSeconds;
+                                delayTask.FinishSeconds = CurrentSeconds + delayTask.Seconds;
+                            }
                             delayTask.OnFinish?.Invoke();
-                            delayTasks.Remove(currentNode);
+
                         }
                     }
 
@@ -110,13 +127,60 @@ namespace MikroFramework.TimeSystem
 
         private LinkedList<DelayTask> delayTasks = new LinkedList<DelayTask>();
 
+        [Obsolete("AddDelayTask() with two parameters is obsolete, use the one with three parameters instead")]
         public ITimeSystem AddDelayTask(float seconds, Action onFinished)
         {
             DelayTask delayTask = new DelayTask()
             {
                 Seconds = seconds,
                 OnFinish = onFinished,
-                State = DelayTaskState.NotStart
+                State = DelayTaskState.NotStart,
+                MaxLoopCount = 1,
+                CurrentLoopCount = 0
+            };
+
+            delayTasks.AddLast(new LinkedListNode<DelayTask>(delayTask));
+            taskList.Add(delayTask);
+            return this;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="delay"></param>
+        /// <param name="onFinished"></param>
+        /// <param name="timerUnit"></param>
+        /// <param name="loopCount">Use -1 for infinite loop count</param>
+        /// <returns></returns>
+        public ITimeSystem AddDelayTask(float delay, Action onFinished, TimerUnit timerUnit = TimerUnit.Second, int loopCount = 1) {
+            float timeInSeconds = 0;
+
+            
+            switch (timerUnit) {
+                case TimerUnit.Second:
+                    timeInSeconds = delay;
+                    break;
+                case TimerUnit.Millisecond:
+                    timeInSeconds = delay / 1000f;
+                    break;
+                case TimerUnit.Minute:
+                    timeInSeconds = delay * 60f;
+                    break;
+                case TimerUnit.Hour:
+                    timeInSeconds = delay * 60f * 60f;
+                    break;
+                case TimerUnit.Day:
+                    timeInSeconds = delay * 60f * 60f * 24f;
+                    break;
+            }
+            
+            DelayTask delayTask = new DelayTask()
+            {
+                Seconds = timeInSeconds,
+                OnFinish = onFinished,
+                State = DelayTaskState.NotStart,
+                MaxLoopCount = loopCount,
+                CurrentLoopCount = 0
             };
 
             delayTasks.AddLast(new LinkedListNode<DelayTask>(delayTask));
@@ -135,8 +199,10 @@ namespace MikroFramework.TimeSystem
             foreach (DelayTask delayTask in taskList)
             {
                 delayTask.State = DelayTaskState.NotStart;
+                delayTask.CurrentLoopCount = 0;
                 delayTasks.AddLast(delayTask);
             }
+            Start();
         }
 
 

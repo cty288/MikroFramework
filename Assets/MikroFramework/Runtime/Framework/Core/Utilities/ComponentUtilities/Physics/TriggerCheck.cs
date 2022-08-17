@@ -14,8 +14,7 @@ namespace MikroFramework.Utilities
         [SerializeField] private float maxDistance = 100;
         [SerializeField] private float detectTime = 1f;
 
-        [SerializeField]
-        private HashSet<Collider> colliders;
+        [SerializeField] private HashSet<Collider> colliders = new HashSet<Collider>();
         /// <summary>
         /// Get all 2D colliders that are in the current trigger of this object
         /// </summary>

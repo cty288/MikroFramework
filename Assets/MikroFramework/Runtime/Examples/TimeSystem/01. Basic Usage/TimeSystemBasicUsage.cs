@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using MikroFramework.TimeSystem;
 using UnityEngine;
 
 namespace MikroFramework.Examples
@@ -11,7 +12,7 @@ namespace MikroFramework.Examples
             TimeSystem.TimeSystem ts = new TimeSystem.TimeSystem();
 
             ts.AddDelayTask(3, () => { Debug.Log("3 sec"); })
-                .AddDelayTask(5, ()=> Debug.Log("5 sec"));
+                .AddDelayTask(5000, () => Debug.Log("5 sec"), TimerUnit.Millisecond);
 
             ts.Start();
             ts.Start();
