@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using MikroFramework.Managers;
 using MikroFramework.Singletons;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 namespace MikroFramework.UIKit {
     public enum UILayer
@@ -15,91 +17,109 @@ namespace MikroFramework.UIKit {
         Top,
     }
 
-    [MonoSingletonPath("[FrameworkPersistent]/UIManager")]
+
+
+    public struct DefaultUISettings {
+        public Vector2 ReferenceResolution;
+        public float MatchWidthOrHeight;
+
+        public DefaultUISettings(Vector2 referenceResolution, float matchWidthOrHeight) {
+            this.ReferenceResolution = referenceResolution;
+            this.MatchWidthOrHeight = matchWidthOrHeight;
+        }
+    }
     public class UIManager : ManagerBehavior, ISingleton {
-        private Dictionary<string, GameObject> panelDictionary = new Dictionary<string, GameObject>();
-        private static UIManager singleton {
+        private Dictionary<IPanel, IUIRoot> allPanelsToRoots = new Dictionary<IPanel, IUIRoot>();
+        private List<IUIRoot> allRoots = new List<IUIRoot>();
+
+        public static UIManager Singleton {
             get {
                 return SingletonProperty<UIManager>.Singleton;
             }
         }
 
+        public static DefaultUISettings DefaultUISettings { get; private set; } = new DefaultUISettings()
+            {MatchWidthOrHeight = 0, ReferenceResolution = new Vector2(1920, 1080)};
+
+
         void ISingleton.OnSingletonInit() {
-            if (!uiRoot) {
-                uiRoot = Object.Instantiate(Resources.Load<GameObject>("UIRoot"));
-                uiRoot.name = "UIRoot";
-            }
-        }
-
-
-        private static GameObject uiRoot;
-        public static GameObject UIRoot {
-            get {
-                if (uiRoot == null) {
-                    uiRoot = Object.Instantiate(Resources.Load<GameObject>("UIRoot"));
-                    uiRoot.name = "UIRoot";
-                }
-
-                return uiRoot;
-            }
-        }
-
-        [Obsolete]
-        /// <summary>
-        /// Set the resolution of the canvas ("Scale with Screen Size" mode)
-        /// </summary>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        /// <param name="matchWidthOrHeight"></param>
-        public static void SetResolution(float width, float height, float matchWidthOrHeight) {
-            CanvasScaler canvasScaler = UIRoot.GetComponent<CanvasScaler>();
-            canvasScaler.referenceResolution = new Vector2(width, height);
-            canvasScaler.matchWidthOrHeight = matchWidthOrHeight;
-        }
-        [Obsolete]
-        public static GameObject LoadPanel(string panelName,UILayer uiLayer) {
-
-            GameObject panelPrefab = Resources.Load<GameObject>(panelName);
-            GameObject panelObj = Instantiate(panelPrefab);
-            panelObj.name = panelName;
-            //panelObj.transform.SetParent(canvasObj.transform);
-
-            singleton. panelDictionary.Add(panelName,panelObj);
-
-            switch (uiLayer) {
-                case UILayer.Bg:
-                    panelObj.transform.SetParent(UIRoot.transform.Find("Bg"));
-                    break;
-                case UILayer.Common:
-                    panelObj.transform.SetParent(UIRoot.transform.Find("Common"));
-                    break;
-                case UILayer.Top:
-                    panelObj.transform.SetParent(UIRoot.transform.Find("Top"));
-                    break;
-            }
-
             
-
-            RectTransform panelRectTransform = panelObj.transform as RectTransform;
-
-            panelRectTransform.offsetMin=Vector2.zero;
-            panelRectTransform.offsetMax=Vector2.zero;
-            panelRectTransform.anchoredPosition3D=Vector3.zero;
-            panelRectTransform.anchorMin=Vector2.zero;
-            panelRectTransform.anchorMax = Vector2.one;
-
-            return panelObj;
         }
-        [Obsolete]
-        public static void UnLoadPanel(string panelName) {
-            if (singleton.panelDictionary.ContainsKey(panelName)) {
-                Destroy(singleton.panelDictionary[panelName]);
+
+        public void RegisterPanel(IPanel panel, IUIRoot root) {
+
+            if (panel.PanelType != PanelType.Root) {
+                if (!allPanelsToRoots.ContainsKey(panel)) {
+                    allPanelsToRoots.Add(panel, root);
+                }
+            }
+          
+            if (!allRoots.Contains(root)) {
+                allRoots.Add(root);
+            }
+        }
+
+        /// <summary>
+        /// Open a panel. This will always open a currently closed panel. If no closed panel exists or no pre-existing panel exists, it will try to create a new one (if createNewIfNotExist is true)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="parent">The parent of this panel. Can be root or any panel containers. If null, the parent will be a random root panel. Note that MainPanels can only have the root UI as its parent</param>
+        /// <param name="message">The message to be passed to the panel</param>
+        /// <param name="createNewIfNotExist"> </param>
+        /// <param name="assetNameIfNotExist">The asset name in the asset bundle for the panel. Used to create the panel if it doesn't exist in the scene</param>
+        public void Open<T>(IPanelContainer parent, UIMsg message, bool createNewIfNotExist = true,
+            string assetNameIfNotExist = "") {
+            if (allRoots.Count == 0) {
+                if (!EventSystem.current) {
+                   EventSystem eventSystem = new GameObject("EventSystem").AddComponent<EventSystem>();
+                    eventSystem.gameObject.AddComponent<StandaloneInputModule>();
+                }
+                
+                GameObject rootPanel = new GameObject("UIRoot");
+                var uiRoot = rootPanel.AddComponent<UIRoot>();
+               
+            }
+            
+            if (parent == null) {
+                IUIRoot selectedRoot = allRoots[Random.Range(0, allRoots.Count)];
+                selectedRoot.Open<T>(null, message, createNewIfNotExist, assetNameIfNotExist);
+                return;
+            }
+
+            if (parent is IUIRoot root) {
+                root.Open<T>(null, message, createNewIfNotExist, assetNameIfNotExist);
+                return;
+            }
+
+            if (allPanelsToRoots.ContainsKey(parent)) {
+                allPanelsToRoots[parent].Open<T>(parent, message, createNewIfNotExist, assetNameIfNotExist);
             }
             else {
-                Debug.LogError("Unable to find panel "+panelName+" when unloading it.");
+                Debug.LogException(new Exception($"The parent container {parent} is not registered into the UI Manager!"));
             }
         }
-        
+
+
+        /// <summary>
+        /// Close the current panel. If the current panel is the main panel, then it will return to the last opened main panel.
+        /// </summary>
+        /// <param name="panel"></param>
+        /// <param name="alsoCloseChild"></param>
+        public void ClosePanel(IPanel panel, bool alsoCloseChild = true) {
+            if (allPanelsToRoots.ContainsKey(panel)) {
+                allPanelsToRoots[panel].ClosePanel(panel, alsoCloseChild);
+            }
+            else {
+                Debug.LogException(new Exception($"The panel {panel} is not registered into the UI Manager!"));
+            }
+        }
+
+
+        public static void SetResolution(DefaultUISettings uiSettings) {
+            DefaultUISettings = uiSettings;
+        }
+
+
     }
 
 }

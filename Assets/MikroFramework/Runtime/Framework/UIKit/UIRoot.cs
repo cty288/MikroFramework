@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using MikroFramework.ResKit;
 using MikroFramework.Singletons;
+using MikroFramework.UIKit;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-namespace MikroFramework
+namespace MikroFramework.UIKit
 {
 
     public enum PanelType {
@@ -69,7 +71,7 @@ namespace MikroFramework
     }
 
 
-    public interface IUIRoot : IPanelContainer, ISingleton {
+    public interface IUIRoot : IPanelContainer {
         void Open<T>(IPanelContainer parent, UIMsg message, bool createNewIfNotExist = true,
             string assetNameIfNotExist = "");
 
@@ -77,8 +79,8 @@ namespace MikroFramework
 
     }
 
-
-    public class UIRoot : MonoMikroSingleton<UIRoot>, IUIRoot {
+    //TODO: add "hide"
+    public class UIRoot : MonoBehaviour, IUIRoot {
         //examples:
         //1. Normal open/close
         //2. Load from AssetBundle
@@ -89,7 +91,19 @@ namespace MikroFramework
         private Dictionary<Type, List<IPanel>> allGeneratedPanels = new Dictionary<Type, List<IPanel>>();
         private ResLoader resLoader;
         private IPanel currentMainPanel = null;
-        private void Awake() {
+
+       
+        public void Awake() {
+            if (!GetComponent<Canvas>()) {
+                DefaultUISettings uiSettings = UIManager.DefaultUISettings;
+                Canvas canvas = gameObject.AddComponent<Canvas>();
+                canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+                CanvasScaler canvasScaler = gameObject.AddComponent<CanvasScaler>();
+                canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+                canvasScaler.referenceResolution = uiSettings.ReferenceResolution;
+                canvasScaler.matchWidthOrHeight = uiSettings.MatchWidthOrHeight;
+                gameObject.AddComponent<GraphicRaycaster>();
+            }
             GetPreExistingPanels();
             resLoader = ResLoader.Allocate();
         }
@@ -129,16 +143,27 @@ namespace MikroFramework
                     return;
                 }
 
+                if (String.IsNullOrEmpty(assetNameIfNotExist)) {
+                    assetNameIfNotExist = typeof(T).Name;
+                }
                 GameObject panel = resLoader.LoadSync<GameObject>(assetNameIfNotExist);
                 if (!panel || panel.GetComponent<IPanel>() == null) {
                     Debug.LogException(new Exception($"The panel of type {typeof(T)} you try to create does not inherit from IPanel!"));
                     return;
                 }
                 firstUnOpenedPanel = Instantiate(panel,transform).GetComponent<IPanel>();
-                allGeneratedPanels[typeof(T)].Add(firstUnOpenedPanel);
+                UIManager.Singleton.RegisterPanel(firstUnOpenedPanel, this);
+                if (allGeneratedPanels.ContainsKey(typeof(T))) {
+                    allGeneratedPanels[typeof(T)].Add(firstUnOpenedPanel);
+                }
+                else {
+                    allGeneratedPanels.Add(typeof(T), new List<IPanel> {firstUnOpenedPanel});
+                }
+               
                 firstUnOpenedPanel.OnInit();
             }
 
+            //if the panel is a main panel, then close the current main panel but not removing it from the list (just set inactive)
             if (firstUnOpenedPanel.PanelType == PanelType.MainPanel) {
                 if (parentContainer != this) {
                     parentContainer = this;
@@ -165,7 +190,7 @@ namespace MikroFramework
             panel.OnOpen(msg);
             if (parent.IsOnTop())
             {
-                EventSystem.current.SetSelectedGameObject(panel.DefaultSelectedGameObjectWhenFocused);
+                StartCoroutine(SelectFocused(panel.DefaultSelectedGameObjectWhenFocused));
                 panel.OnFocused();
             }
         }
@@ -206,9 +231,9 @@ namespace MikroFramework
 
 
             if (panel is IPanelContainer container) {
-                foreach (IPanel child in container.Children) {
-                    if (alsoCloseChild) {
-                        DoClosePanel(child);
+                if (alsoCloseChild) {
+                    while (container.Children.Count>0) {
+                        DoClosePanel(container.Children[0], true);
                     }
                 }
             }
@@ -219,16 +244,24 @@ namespace MikroFramework
                     panel.Parent.Children.Remove(panel);
                 }
                 
+                //refresh selected game object
                 IPanel topParentChild = panel.Parent.GetTopChild();
                 if (topParentChild == null) {
                     topParentChild = panel.Parent;
                 }
                 if (topParentChild.IsOnTop()) {
                     if (topParentChild.DefaultSelectedGameObjectWhenFocused) {
-                        EventSystem.current.SetSelectedGameObject(topParentChild.DefaultSelectedGameObjectWhenFocused);
+                        StartCoroutine(SelectFocused(topParentChild.DefaultSelectedGameObjectWhenFocused));
                     }
                     topParentChild.OnFocused();
                 }
+            }
+        }
+
+        IEnumerator SelectFocused(GameObject obj) {
+            if (obj) {
+                yield return null;
+                EventSystem.current.SetSelectedGameObject(obj);
             }
         }
         
@@ -241,6 +274,10 @@ namespace MikroFramework
         public List<IPanel> Children { get; } = new List<IPanel>();
 
         public IPanel GetTopChild() {
+            if (Children.Count <= 0)
+            {
+                return null;
+            }
             return Children[Children.Count - 1];
         }
 
@@ -263,7 +300,7 @@ namespace MikroFramework
                 GetComponentsInChildren<IPanel>(true).Where((panel => panel.gameObject != this.gameObject)).ToList();
 
             allGeneratedPanels = new Dictionary<Type, List<IPanel>>();
-
+            UIManager.Singleton.RegisterPanel(this, this);
             foreach (IPanel panel in allPanels) {
                 panel.IsOpening = panel.gameObject.activeInHierarchy;
                 if (panel.PanelType == PanelType.MainPanel) {
@@ -283,6 +320,8 @@ namespace MikroFramework
                 else {
                     allGeneratedPanels.Add(panel.GetType(), new List<IPanel> {panel});
                 }
+
+                UIManager.Singleton.RegisterPanel(panel, this);
                 panel.OnInit();
             }
         }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using MikroFramework.UIKit;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,11 +14,11 @@ namespace MikroFramework
         {
             Debug.Log("About Panel Init");
             exitButton.onClick.AddListener(() => {
-                UIRoot.Singleton.ClosePanel(this);
+                UIManager.Singleton.ClosePanel(this);
             });
 
             settingsButton.onClick.AddListener(() => {
-                UIRoot.Singleton.Open<SettingsPanel>(this, null);
+                UIManager.Singleton.Open<SettingsPanel>(this, null);
             });
         }
 

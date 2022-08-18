@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using MikroFramework.UIKit;
 using UnityEngine;
 
-namespace MikroFramework
-{
+namespace MikroFramework.UIKit{
     public abstract class AbstractPanel : MonoBehaviour, IPanel {
     
         public bool IsOnTop() {

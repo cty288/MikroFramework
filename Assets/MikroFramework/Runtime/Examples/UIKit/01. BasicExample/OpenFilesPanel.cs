@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using MikroFramework.UIKit;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +13,7 @@ namespace MikroFramework
         public override void OnInit() {
             //not close child, this will instantiate a new open file panel next time when we press openFilesButton
             backButton.onClick.AddListener(() => {
-                UIRoot.Singleton.ClosePanel(this, false);
+                UIManager.Singleton.ClosePanel(this, false);
             });
         }
 

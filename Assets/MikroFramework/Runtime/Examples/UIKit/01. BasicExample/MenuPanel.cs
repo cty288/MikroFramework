@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using MikroFramework.UIKit;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,13 +11,20 @@ namespace MikroFramework
         [SerializeField] private Button aboutButton;
         public override void OnInit() {
             Debug.Log("Menu Panel Init");
-            loadButton.onClick.AddListener(() => {
-                UIRoot.Singleton.Open<LoadPanel>(this, null);
-            });
+            if (loadButton) {
+                loadButton.onClick.AddListener(() => {
+                    UIManager.Singleton.Open<LoadPanel>(this, null);
+                });
+            }
+            
 
-            aboutButton.onClick.AddListener(() => {
-                UIRoot.Singleton.Open<AboutPanel>(null, null);
-            });
+            if (aboutButton) {
+                aboutButton.onClick.AddListener(() => {
+                    //load from asset bundle
+                    UIManager.Singleton.Open<AboutPanel>(null, null, true);
+                });
+            }
+           
         }
 
         public override void OnOpen(UIMsg msg) {

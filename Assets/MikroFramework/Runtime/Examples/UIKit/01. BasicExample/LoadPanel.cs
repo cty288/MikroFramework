@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using MikroFramework.UIKit;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,13 +17,13 @@ namespace MikroFramework
         public override void OnInit() {
             //pass msg
             openFilesButton.onClick.AddListener(() => {
-                UIRoot.Singleton.Open<OpenFilesPanel>(this, new OpenFilePanelMsg() {FileCount = Random.Range(1, 100)},
+                UIManager.Singleton.Open<OpenFilesPanel>(this, new OpenFilePanelMsg() {FileCount = Random.Range(1, 100)},
                     true, "OpenFilesSubPanel");
             });
 
             //not close child, this will instantiate a new open file panel next time when we press openFilesButton
             backButton.onClick.AddListener(() => {
-                UIRoot.Singleton.ClosePanel(this, alsoCloseChild);
+                UIManager.Singleton.ClosePanel(this, alsoCloseChild);
             });
         }
 
