@@ -9,7 +9,11 @@ using UnityEngine;
 
 namespace MikroFramework
 {
-    public class ReflectionUtility {
+    public static class ReflectionUtility {
+
+
+
+        
         /// <summary>
         /// Return the Assembly object of assembly "Assembly-CSharp-Editor"
         /// </summary>
@@ -22,7 +26,33 @@ namespace MikroFramework
             }
         }
 
-        
+
+        /// <summary>
+        /// Get all subtypes of the type
+        /// </summary>
+        /// <param name="self"></param>
+        /// <returns></returns>
+        public static IEnumerable<Type> GetSubTypesInAssemblies(this Type self) {
+            return AppDomain.CurrentDomain.GetAssemblies().
+                Where(ass => !ass.FullName.StartsWith("Unity") &&
+                             !ass.FullName.StartsWith("Psd")&&
+                             !ass.FullName.StartsWith("vs")&&
+                             !ass.FullName.StartsWith("System.")&&
+                             !ass.FullName.StartsWith("nunit")).
+                SelectMany(assembly => assembly.GetTypes())
+                .Where(type => type.IsSubclassOf(self));
+        }
+
+        /// <summary>
+        /// Get all subtypes of the type whose attribute is TAttribute
+        /// </summary>
+        /// <typeparam name="TAttribute"></typeparam>
+        /// <param name="self"></param>
+        /// <returns></returns>
+        public static IEnumerable<Type> GetSubTypesInAssemblies<TAttribute>(this Type self) where TAttribute : Attribute {
+            return GetSubTypesInAssemblies(self).Where(type => type.GetCustomAttribute<TAttribute>() != null);
+        }
+
 
         public static List<string> GetNamespaceForClass(string className) {
             List<string> classNames;

@@ -9,6 +9,7 @@ namespace MikroFramework.Architecture
 {
     public abstract class AbstractMikroController<T> : MonoBehaviour, IController where T:Architecture<T>,new()
     {
+
         IArchitecture IBelongToArchitecture.GetArchitecture() {
             return Architecture<T>.Interface;
         }

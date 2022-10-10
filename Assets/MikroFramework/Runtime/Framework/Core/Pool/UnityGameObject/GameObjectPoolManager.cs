@@ -112,7 +112,7 @@ namespace MikroFramework
                 {
                     if (AutoCreatePoolWhenAllocating)
                     {
-                        GetOrCreatePool(prefab);
+                        pool = GetOrCreatePool(prefab);
                     }
                     else
                     {

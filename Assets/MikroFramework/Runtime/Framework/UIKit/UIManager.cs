@@ -46,6 +46,18 @@ namespace MikroFramework.UIKit {
             
         }
 
+
+        public T GetPanel<T>(bool isActive) where T:IPanel{
+            foreach (var panel in allPanelsToRoots.Keys) {
+                if (panel is T && panel.IsOpening == isActive) {
+                    return (T)panel;
+                }
+            }
+
+            return default(T);
+        }
+        
+
         public void RegisterPanel(IPanel panel, IUIRoot root) {
 
             if (panel.PanelType != PanelType.Root) {
@@ -67,8 +79,8 @@ namespace MikroFramework.UIKit {
         /// <param name="message">The message to be passed to the panel</param>
         /// <param name="createNewIfNotExist"> </param>
         /// <param name="assetNameIfNotExist">The asset name in the asset bundle for the panel. Used to create the panel if it doesn't exist in the scene</param>
-        public void Open<T>(IPanelContainer parent, UIMsg message, bool createNewIfNotExist = true,
-            string assetNameIfNotExist = "") {
+        public T Open<T>(IPanelContainer parent, UIMsg message, bool createNewIfNotExist = true,
+            string assetNameIfNotExist = "") where T: class, IPanel{
             if (allRoots.Count == 0) {
                 if (!EventSystem.current) {
                    EventSystem eventSystem = new GameObject("EventSystem").AddComponent<EventSystem>();
@@ -82,20 +94,19 @@ namespace MikroFramework.UIKit {
             
             if (parent == null) {
                 IUIRoot selectedRoot = allRoots[Random.Range(0, allRoots.Count)];
-                selectedRoot.Open<T>(null, message, createNewIfNotExist, assetNameIfNotExist);
-                return;
+                return selectedRoot.Open<T>(null, message, createNewIfNotExist, assetNameIfNotExist);
             }
 
             if (parent is IUIRoot root) {
-                root.Open<T>(null, message, createNewIfNotExist, assetNameIfNotExist);
-                return;
+                return root.Open<T>(null, message, createNewIfNotExist, assetNameIfNotExist);
             }
 
             if (allPanelsToRoots.ContainsKey(parent)) {
-                allPanelsToRoots[parent].Open<T>(parent, message, createNewIfNotExist, assetNameIfNotExist);
+                return allPanelsToRoots[parent].Open<T>(parent, message, createNewIfNotExist, assetNameIfNotExist);
             }
             else {
                 Debug.LogException(new Exception($"The parent container {parent} is not registered into the UI Manager!"));
+                return default(T);
             }
         }
 

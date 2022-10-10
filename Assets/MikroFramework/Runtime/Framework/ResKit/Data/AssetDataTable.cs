@@ -11,7 +11,11 @@ namespace MikroFramework
         public TableIndex<string, AssetData> NameIndex = new TableIndex<string, AssetData>(data=>data.Name);
 
         public AssetData GetAssetDataByResSearchKeys(ResSearchKeys resSearchKeys) {
-            return NameIndex.Get(resSearchKeys.Address).FirstOrDefault(r => r.AssetType == resSearchKeys.ResType.ToString());
+            var datas = NameIndex.Get(resSearchKeys.Address);
+            if (datas == null) {
+                return null;
+            }
+            return datas.FirstOrDefault(r => r.AssetType == resSearchKeys.ResType.ToString());
         }
 
         protected override void OnClear() {

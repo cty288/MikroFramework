@@ -12,9 +12,10 @@ namespace MikroFramework
 
         public override void OnInit() {
             //not close child, this will instantiate a new open file panel next time when we press openFilesButton
+            /*
             backButton.onClick.AddListener(() => {
                 UIManager.Singleton.ClosePanel(this, false);
-            });
+            });*/
         }
 
         public override void OnOpen(UIMsg msg) {

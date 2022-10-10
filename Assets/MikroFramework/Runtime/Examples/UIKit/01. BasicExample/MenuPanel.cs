@@ -14,6 +14,7 @@ namespace MikroFramework
             if (loadButton) {
                 loadButton.onClick.AddListener(() => {
                     UIManager.Singleton.Open<LoadPanel>(this, null);
+                    
                 });
             }
             

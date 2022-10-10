@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using MikroFramework.Managers;
@@ -5,6 +6,7 @@ using MikroFramework.Singletons;
 using UnityEngine;
 
 namespace MikroFramework.AudioKit {
+    [Obsolete("AudioManager is Obsolete. Use AudioSystem Instead")]
     [MonoSingletonPath("[FrameworkPersistent]/AudioManager")]
     public class AudioManager : ManagerBehavior, ISingleton {
 
@@ -15,7 +17,7 @@ namespace MikroFramework.AudioKit {
         }
 
         private AudioListener audioListener;
-
+        [Obsolete("AudioManager is Obsolete. Use AudioSystem Instead")]
 
         /// <summary>
         /// Play an audio clip
@@ -33,7 +35,7 @@ namespace MikroFramework.AudioKit {
         }
 
         private AudioSource bgmAudioSource = null;
-
+        [Obsolete("AudioManager is Obsolete. Use AudioSystem Instead")]
         /// <summary>
         /// Play a background music (a scene can only have one bgm at a time)
         /// </summary>
@@ -52,7 +54,7 @@ namespace MikroFramework.AudioKit {
             singleton.bgmAudioSource.loop = loop;
             singleton.bgmAudioSource.Play();
         }
-
+        [Obsolete("AudioManager is Obsolete. Use AudioSystem Instead")]
         /// <summary>
         /// Stop playing the current BGM
         /// </summary>
@@ -64,6 +66,7 @@ namespace MikroFramework.AudioKit {
         /// <summary>
         /// Pause playing the current BGM
         /// </summary>
+        [Obsolete("AudioManager is Obsolete. Use AudioSystem Instead")]
         public static void PauseBGM() {
             singleton.bgmAudioSource.Pause();
         }
@@ -71,6 +74,7 @@ namespace MikroFramework.AudioKit {
         /// <summary>
         /// Resume the paused BGM
         /// </summary>
+        [Obsolete("AudioManager is Obsolete. Use AudioSystem Instead")]
         public static void ResumeBGM() {
             singleton.bgmAudioSource.UnPause();
         }
@@ -78,6 +82,7 @@ namespace MikroFramework.AudioKit {
         /// <summary>
         /// Mute the BGM
         /// </summary>
+        [Obsolete("AudioManager is Obsolete. Use AudioSystem Instead")]
         public static void BGMMute() {
             singleton.bgmAudioSource.Pause();
             singleton.bgmAudioSource.mute = true;
@@ -86,6 +91,7 @@ namespace MikroFramework.AudioKit {
         /// <summary>
         /// Turn off all audios
         /// </summary>
+        [Obsolete("AudioManager is Obsolete. Use AudioSystem Instead")]
         public static void AudioOff() {
             AudioSource[] audioSources = singleton.GetComponentsInChildren<AudioSource>();
             foreach (AudioSource audioSource in audioSources) {
@@ -99,6 +105,7 @@ namespace MikroFramework.AudioKit {
         /// <summary>
         /// Turn on the BGM
         /// </summary>
+        [Obsolete("AudioManager is Obsolete. Use AudioSystem Instead")]
         public static void BGMOn()
         {
             singleton.bgmAudioSource.UnPause();
@@ -107,6 +114,7 @@ namespace MikroFramework.AudioKit {
         /// <summary>
         /// Turn on all audios
         /// </summary>
+        [Obsolete("AudioManager is Obsolete. Use AudioSystem Instead")]
         public static void AudioOn()
         {
             AudioSource[] audioSources = singleton.GetComponentsInChildren<AudioSource>();
@@ -120,6 +128,7 @@ namespace MikroFramework.AudioKit {
             }
         }
 
+        
         private void CheckAudioListener()
         {
             if (!audioListener) {

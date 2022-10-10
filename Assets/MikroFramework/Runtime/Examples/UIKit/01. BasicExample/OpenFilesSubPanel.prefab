@@ -283,6 +283,7 @@ GameObject:
   - component: {fileID: 2620775476053887682}
   - component: {fileID: 2620775476053887681}
   - component: {fileID: 2620775476053887680}
+  - component: {fileID: 4294758919986883264}
   m_Layer: 5
   m_Name: btnBack
   m_TagString: Untagged
@@ -392,3 +393,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &4294758919986883264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2620775476053887686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c907c6f2d3531c40a00cc5b79abecd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  alsoCloseChild: 1

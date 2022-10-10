@@ -12,7 +12,7 @@ namespace MikroFramework.Utilities {
             
             EditorPrefs.SetInt("FrameworkVersion_Major", 0);
             EditorPrefs.SetInt("FrameworkVersion_Minor", 1);
-            EditorPrefs.SetInt("FrameworkVersion_Build", 9);
+            EditorPrefs.SetInt("FrameworkVersion_Build", 11);
             
             AddCurrentFrameworkBuildVersion();
             return "Builds/MikroFramework_v." + GetCurrentFrameworkVersionString() + ".unitypackage";

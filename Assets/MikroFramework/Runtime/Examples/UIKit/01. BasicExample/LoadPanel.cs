@@ -22,9 +22,10 @@ namespace MikroFramework
             });
 
             //not close child, this will instantiate a new open file panel next time when we press openFilesButton
+            /*
             backButton.onClick.AddListener(() => {
                 UIManager.Singleton.ClosePanel(this, alsoCloseChild);
-            });
+            });*/
         }
 
         public override void OnOpen(UIMsg msg) {
